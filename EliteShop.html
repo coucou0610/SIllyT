@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>金鳞商会 · 至高珍品阁</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Noto+Serif+SC:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========== 金鳞商会 · 尊贵奢享 视觉重铸 ==========
+           不改变任何逻辑、占位符、事件绑定，仅焕新样式
+           龙鳞暗纹 · 鎏金溢彩 · 至高礼遇
+        ================================================= */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #0a0705;
+            background-image: radial-gradient(circle at 25% 40%, rgba(180, 140, 70, 0.2) 1px, transparent 1px);
+            background-size: 32px 32px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 28px 20px;
+            font-family: 'Noto Serif SC', 'Cinzel', serif;
+        }
+
+        /* 主容器 —— 金鳞龙脊玉璧 */
+        .elite-shop-container {
+            font-family: 'Noto Serif SC', serif;
+            width: 100%;
+            max-width: 780px;
+            margin: 0 auto;
+            background: radial-gradient(ellipse at 20% 30%, #1f1b14, #0e0b07);
+            border: 2px solid #e6c27a;
+            border-radius: 48px 24px 48px 24px;
+            padding: 30px 28px;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.8), inset 0 0 40px rgba(230, 194, 122, 0.2), 0 0 0 6px rgba(180, 130, 60, 0.3);
+            position: relative;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(0.3px);
+        }
+
+        /* 龙鳞暗纹 + 流动金线 */
+        .elite-shop-container::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            border-radius: 44px 20px 44px 20px;
+            background-image: repeating-linear-gradient(45deg, rgba(220, 190, 110, 0.08) 0px, rgba(220, 190, 110, 0.08) 2px, transparent 2px, transparent 12px),
+                              repeating-linear-gradient(135deg, rgba(200, 160, 80, 0.06) 0px, rgba(200, 160, 80, 0.06) 1px, transparent 1px, transparent 10px);
+            pointer-events: none;
+        }
+
+        /* 四角鎏金龙纹 */
+        .elite-shop-container::after {
+            content: "🐉";
+            position: absolute;
+            bottom: 18px;
+            right: 22px;
+            font-size: 34px;
+            opacity: 0.25;
+            color: #dbb86b;
+            text-shadow: 0 0 6px #ffd58c;
+            pointer-events: none;
+            font-family: monospace;
+            transform: rotate(15deg);
+        }
+
+        /* 增加左上角装饰 */
+        .elite-shop-container .corner-dragon {
+            display: none;
+        }
+        /* 实际用伪类做左上角 */
+        .elite-shop-container {
+            overflow: hidden;
+        }
+        .shop-header {
+            position: relative;
+            z-index: 2;
+        }
+        .shop-header::before {
+            content: "⛩️";
+            position: absolute;
+            top: -10px;
+            left: 15px;
+            font-size: 40px;
+            opacity: 0.3;
+            color: #e6c27a;
+            font-family: monospace;
+        }
+
+        .shop-header {
+            text-align: center;
+            border-bottom: 2px solid rgba(230, 194, 122, 0.4);
+            padding-bottom: 18px;
+            margin-bottom: 28px;
+            position: relative;
+        }
+
+        .shop-title {
+            font-family: 'Cinzel', serif;
+            font-size: 34px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #f9e0a0, #d4af37, #b57c1c);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5), 0 0 8px rgba(212, 175, 55, 0.6);
+            letter-spacing: 6px;
+            margin: 0 0 12px 0;
+            position: relative;
+            display: inline-block;
+        }
+
+        .shop-title::before {
+            content: "✦";
+            font-size: 32px;
+            background: none;
+            color: #e9c983;
+            text-shadow: 0 0 6px gold;
+            margin-right: 16px;
+            display: inline-block;
+        }
+
+        .shop-title::after {
+            content: "✦";
+            font-size: 32px;
+            background: none;
+            color: #e9c983;
+            text-shadow: 0 0 6px gold;
+            margin-left: 16px;
+            display: inline-block;
+        }
+
+        .welcome-msg {
+            font-size: 16px;
+            font-style: italic;
+            color: #f3e2bf;
+            background: rgba(0, 0, 0, 0.55);
+            display: inline-block;
+            padding: 6px 24px;
+            border-radius: 60px;
+            border: 1px solid rgba(212, 175, 55, 0.6);
+            backdrop-filter: blur(4px);
+            letter-spacing: 1px;
+            max-width: 90%;
+            margin: 0 auto;
+            box-shadow: inset 0 0 6px rgba(255,215,0,0.2), 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        /* 贵宾资产栏 */
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(15, 12, 8, 0.7);
+            border: 1px solid #c9aa5e;
+            border-radius: 60px;
+            padding: 12px 24px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(8px);
+            box-shadow: inset 0 0 8px rgba(255, 220, 120, 0.2), 0 6px 14px rgba(0,0,0,0.4);
+            font-size: 16px;
+            font-weight: 500;
+            color: #f2e2be;
+        }
+
+        .gold-amount {
+            font-family: 'Cinzel', monospace;
+            font-weight: bold;
+            color: #ffdf8c;
+            font-size: 22px;
+            text-shadow: 0 0 6px #f5b642;
+            background: rgba(0,0,0,0.4);
+            padding: 0 12px;
+            border-radius: 40px;
+            margin-left: 8px;
+            letter-spacing: 1px;
+        }
+
+        /* 按钮通用 金缕样式 */
+        .action-btn {
+            font-family: 'Cinzel', 'Noto Serif SC', serif;
+            background: linear-gradient(145deg, #2a241a, #17130d);
+            color: #e9cd8a;
+            border: 1px solid #e9bc6b;
+            padding: 7px 22px;
+            border-radius: 40px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,235,160,0.2);
+        }
+
+        .action-btn:hover:not(:disabled) {
+            background: linear-gradient(145deg, #3f3526, #25201a);
+            color: #ffeaac;
+            border-color: #f7cf7c;
+            box-shadow: 0 0 12px rgba(230, 194, 122, 0.6), inset 0 0 4px rgba(255,235,150,0.5);
+            transform: translateY(-1px);
+        }
+
+        .action-btn:active:not(:disabled) {
+            transform: translateY(1px);
+            box-shadow: 0 1px 2px black;
+        }
+
+        .action-btn:disabled {
+            border-color: #6a5a3c;
+            color: #7a6b4a;
+            cursor: not-allowed;
+            filter: grayscale(0.2);
+            background: #2f2a1f;
+        }
+
+        /* 分栏标题 金箔镶边 */
+        .section-title {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #e9c27c;
+            border-bottom: 2px solid #d6aa4b;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            letter-spacing: 2px;
+            text-shadow: 0 1px 2px black;
+        }
+
+        .section-title::before {
+            content: "✦";
+            font-size: 20px;
+            color: #ffd966;
+            text-shadow: 0 0 5px orange;
+        }
+
+        /* 商品列表 —— 龙鳞卡牌 */
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 28px 0;
+            display: grid;
+            gap: 18px;
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 20px;
+            background: rgba(10, 8, 5, 0.65);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 28px;
+            transition: all 0.25s;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3), inset 0 0 0 1px rgba(255,215,0,0.1);
+        }
+
+        .item-row:hover {
+            background: rgba(35, 28, 18, 0.8);
+            border-color: #e8bc6e;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 22px rgba(0,0,0,0.4), inset 0 0 8px rgba(230, 180, 70, 0.2);
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .item-header {
+            display: flex;
+            align-items: baseline;
+            gap: 14px;
+            margin-bottom: 8px;
+            flex-wrap: wrap;
+        }
+
+        .item-name {
+            font-weight: 700;
+            font-size: 20px;
+            color: #fff1cf;
+            letter-spacing: 1px;
+            text-shadow: 0 0 2px #b2822a;
+        }
+
+        /* 稀有度标签 — 史诗/传说 极致奢华 */
+        .rarity-tag {
+            font-size: 12px;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(2px);
+        }
+
+        .rarity-epic {
+            background: linear-gradient(145deg, #5e2a84, #3a1a5c);
+            color: #e6c2ff;
+            border: 1px solid #b87eff;
+            box-shadow: 0 0 8px #b87eff;
+        }
+
+        .rarity-legendary {
+            background: linear-gradient(145deg, #b2621a, #7e3c0c);
+            color: #ffea9e;
+            border: 1px solid #ffb347;
+            box-shadow: 0 0 14px #ffa559;
+            animation: legendaryPulse 2s infinite;
+        }
+
+        @keyframes legendaryPulse {
+            0% { box-shadow: 0 0 6px #ffa447; border-color: #ffbc6e; }
+            50% { box-shadow: 0 0 18px #ffbc6e; border-color: #ffdc97; }
+            100% { box-shadow: 0 0 6px #ffa447; border-color: #ffbc6e; }
+        }
+
+        .item-type {
+            font-size: 12px;
+            color: #bdaa7a;
+            background: rgba(0,0,0,0.4);
+            padding: 2px 10px;
+            border-radius: 30px;
+            letter-spacing: 1px;
+        }
+
+        .item-desc {
+            font-size: 13px;
+            color: #cfc29a;
+            line-height: 1.45;
+            font-style: normal;
+            opacity: 0.9;
+        }
+
+        .item-action-area {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            min-width: 120px;
+        }
+
+        .item-price {
+            font-family: 'Cinzel', monospace;
+            font-weight: bold;
+            color: #ffdf7e;
+            font-size: 18px;
+            text-shadow: 0 0 5px #e09d32;
+            background: rgba(0,0,0,0.5);
+            padding: 4px 14px;
+            border-radius: 60px;
+            letter-spacing: 1px;
+        }
+
+        /* 出售区（收购珍品） */
+        .sell-area {
+            display: none;
+            background: rgba(0, 0, 0, 0.55);
+            border: 1px solid #cb9e55;
+            border-radius: 36px;
+            padding: 20px;
+            margin-bottom: 28px;
+            backdrop-filter: blur(10px);
+            box-shadow: inset 0 0 20px rgba(255, 200, 80, 0.1), 0 8px 20px black;
+        }
+
+        .sell-area.active {
+            display: block;
+            animation: fadeSlide 0.3s ease;
+        }
+
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(-12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .parsed-sell-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .parsed-sell-list .item-row {
+            background: rgba(0,0,0,0.5);
+            border-color: #b69258;
+            padding: 12px 18px;
+        }
+
+        .parsed-sell-list .item-name {
+            font-size: 18px;
+        }
+
+        .sell-btn {
+            border-color: #7cb57c;
+            color: #c7f0b0;
+        }
+
+        /* 交易契约区域 — 金箔卷轴 */
+        .cart-area {
+            background: rgba(8, 6, 3, 0.7);
+            border: 2px solid #e7bd6b;
+            border-radius: 42px;
+            padding: 22px 24px;
+            margin-top: 32px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5), inset 0 0 25px rgba(230, 180, 80, 0.1);
+        }
+
+        .cart-header {
+            font-family: 'Cinzel', serif;
+            font-size: 22px;
+            color: #f3d27e;
+            margin-bottom: 18px;
+            text-align: center;
+            letter-spacing: 3px;
+            border-bottom: 1px dashed #e7bd6b;
+            display: inline-block;
+            width: auto;
+            padding: 0 20px 8px;
+        }
+
+        .cart-input {
+            width: 100%;
+            box-sizing: border-box;
+            font-family: 'Noto Serif SC', monospace;
+            padding: 16px;
+            margin-bottom: 20px;
+            background: #1f1b14;
+            border: 1px solid #b58f48;
+            color: #f7efcf;
+            border-radius: 24px;
+            resize: vertical;
+            min-height: 110px;
+            font-size: 15px;
+            line-height: 1.5;
+            transition: 0.2s;
+            font-weight: 400;
+            box-shadow: inset 0 0 8px rgba(0,0,0,0.6);
+        }
+
+        .cart-input:focus {
+            outline: none;
+            border-color: #ffcf7a;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5), inset 0 0 6px black;
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 20px;
+        }
+
+        .confirm-btn {
+            background: linear-gradient(145deg, #3b2e1c, #211b10);
+            border-color: #f0bd5e;
+            color: #ffeaac;
+            padding: 10px 32px;
+            font-weight: bold;
+        }
+
+        .clear-btn {
+            border-color: #bb8a5a;
+            color: #ecca8c;
+        }
+
+        /* 移动端精致适配 */
+        @media (max-width: 620px) {
+            .elite-shop-container {
+                padding: 20px 18px;
+            }
+            .item-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .item-action-area {
+                flex-direction: row;
+                justify-content: space-between;
+                margin-top: 12px;
+                align-items: center;
+            }
+            .shop-title {
+                font-size: 26px;
+                letter-spacing: 2px;
+            }
+            .shop-title::before, .shop-title::after {
+                font-size: 24px;
+            }
+            .status-bar {
+                flex-wrap: wrap;
+                gap: 12px;
+                justify-content: center;
+            }
+            .cart-header {
+                font-size: 18px;
+            }
+        }
+
+        /* 额外金粉悬浮效果 */
+        .item-price, .gold-amount {
+            transition: all 0.2s;
+        }
+        .item-row:hover .item-price {
+            text-shadow: 0 0 10px #ffbc42;
+        }
+    </style>
+</head>
+<body>
+    <div class="elite-shop-container">
+        <div class="shop-header">
+            <h1 class="shop-title">金鳞商会</h1>
+            <div class="welcome-msg">"$1"</div>
+        </div>
+
+        <div class="status-bar">
+            <div>
+                <span>💎 贵宾资产: </span>
+                <span class="gold-amount">$2</span>
+            </div>
+            <div>
+                <button class="action-btn" onclick="toggleSellArea()">📜 展示藏品</button>
+            </div>
+        </div>
+
+        <div id="sellArea" class="sell-area">
+            <div class="section-title">金鳞收购 · 稀世瑰宝</div>
+            <div class="parsed-sell-list" id="sellListContainer">
+                <div style="display:none;" id="rawSellData">$4</div>
+            </div>
+        </div>
+
+        <div class="section-title">今日绝品</div>
+        <ul class="item-list" id="buyListContainer">
+            <!-- 商品1 -->
+            <li class="item-row">
+                <div class="item-info">
+                    <div class="item-header">
+                        <span class="item-name">$7</span>
+                        <span class="rarity-tag" data-rarity="$6">$6</span>
+                        <span class="item-type">[$5]</span>
+                    </div>
+                    <span class="item-desc">$9</span>
+                </div>
+                <div class="item-action-area">
+                    <span class="item-price">$8</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$7', '$8')">选定</button>
+                </div>
+            </li>
+            <!-- 商品2 -->
+            <li class="item-row">
+                <div class="item-info">
+                    <div class="item-header">
+                        <span class="item-name">$12</span>
+                        <span class="rarity-tag" data-rarity="$11">$11</span>
+                        <span class="item-type">[$10]</span>
+                    </div>
+                    <span class="item-desc">$14</span>
+                </div>
+                <div class="item-action-area">
+                    <span class="item-price">$13</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$12', '$13')">选定</button>
+                </div>
+            </li>
+            <!-- 商品3 -->
+            <li class="item-row">
+                <div class="item-info">
+                    <div class="item-header">
+                        <span class="item-name">$17</span>
+                        <span class="rarity-tag" data-rarity="$16">$16</span>
+                        <span class="item-type">[$15]</span>
+                    </div>
+                    <span class="item-desc">$19</span>
+                </div>
+                <div class="item-action-area">
+                    <span class="item-price">$18</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$17', '$18')">选定</button>
+                </div>
+            </li>
+            <!-- 商品4 -->
+            <li class="item-row">
+                <div class="item-info">
+                    <div class="item-header">
+                        <span class="item-name">$22</span>
+                        <span class="rarity-tag" data-rarity="$21">$21</span>
+                        <span class="item-type">[$20]</span>
+                    </div>
+                    <span class="item-desc">$24</span>
+                </div>
+                <div class="item-action-area">
+                    <span class="item-price">$23</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$22', '$23')">选定</button>
+                </div>
+            </li>
+        </ul>
+
+        <!-- 交易确认区 -->
+        <div class="cart-area">
+            <div class="cart-header">交易契约</div>
+            <textarea id="cartInput" class="cart-input" placeholder="✦ 所选珍品将在此处汇聚为交易契文 ✦"></textarea>
+            <div class="cart-actions">
+                <button class="action-btn clear-btn" onclick="clearCart()">撤销</button>
+                <button class="action-btn confirm-btn" onclick="confirmTransaction()">缔结契约</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== 完全保留原有逻辑，未改动任何核心功能 ==========
+        let inventoryCounts = {};
+
+        // 初始化稀有度标签样式（保留原逻辑，增强视觉）
+        function initRarityTags() {
+            const tags = document.querySelectorAll('.rarity-tag');
+            tags.forEach(tag => {
+                const rarity = tag.getAttribute('data-rarity');
+                if (rarity === '史诗') {
+                    tag.classList.add('rarity-epic');
+                } else if (rarity === '传说') {
+                    tag.classList.add('rarity-legendary');
+                } else {
+                    tag.style.background = 'rgba(180, 140, 70, 0.3)';
+                    tag.style.border = '1px solid #c9aa5e';
+                    tag.style.color = '#f7e3b0';
+                }
+            });
+        }
+
+        function parseSellData() {
+            const rawData = document.getElementById('rawSellData').innerText;
+            const container = document.getElementById('sellListContainer');
+
+            if (!rawData || rawData.trim() === '' || rawData.includes('无|0|0G')) {
+                container.innerHTML = '<div style="text-align:center; padding:15px; color: #dbba78; font-style: italic;">✨ 行囊中暂无商会垂询的稀世珍品 ✨</div>';
+                return;
+            }
+
+            const items = rawData.split('|');
+            let html = '';
+
+            for (let i = 0; i < items.length; i += 3) {
+                if (items[i] && items[i+1] && items[i+2]) {
+                    const itemName = items[i].trim();
+                    const itemQty = parseInt(items[i+1].trim()) || 1;
+                    const itemPrice = items[i+2].trim();
+
+                    if(inventoryCounts[itemName] === undefined) {
+                        inventoryCounts[itemName] = itemQty;
+                    }
+
+                    const forbiddenWords = ['钥匙', '证明', '信件', '凭证', '任务'];
+                    const isForbidden = forbiddenWords.some(word => itemName.includes(word));
+
+                    if(!isForbidden) {
+                        html += `
+                            <div class="item-row">
+                                <div class="item-info">
+                                    <span class="item-name">${itemName} <span style="color:#c8b27a; font-size:14px; font-weight:normal;">x<span id="qty-${itemName}">${inventoryCounts[itemName]}</span></span></span>
+                                </div>
+                                <div class="item-action-area" style="flex-direction: row; align-items: center;">
+                                    <span class="item-price" style="color: #9ece6b;">+${itemPrice}</span>
+                                    <button id="btn-${itemName}" class="action-btn sell-btn" onclick="addToCart('出售', '${itemName}', '${itemPrice}')">出让</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            container.innerHTML = html;
+            updateButtonsState();
+        }
+
+        function toggleSellArea() {
+            const sellArea = document.getElementById('sellArea');
+            sellArea.classList.toggle('active');
+            if (sellArea.classList.contains('active')) {
+                parseSellData();
+            }
+        }
+
+        function addToCart(actionType, itemName, itemPrice) {
+            const cartInput = document.getElementById('cartInput');
+            let currentText = cartInput.value;
+
+            if (actionType === '出售') {
+                if (inventoryCounts[itemName] > 0) {
+                    inventoryCounts[itemName]--;
+                    updateButtonsState();
+
+                    const actionText = `✨ 出让珍品：${itemName}，获得 ${itemPrice} ✨`;
+                    cartInput.value = currentText ? currentText + `\n${actionText}` : actionText;
+                }
+            } else {
+                const actionText = `🏅 购入绝品：${itemName}，支付 ${itemPrice} 🏅`;
+                cartInput.value = currentText ? currentText + `\n${actionText}` : actionText;
+            }
+
+            cartInput.scrollTop = cartInput.scrollHeight;
+        }
+
+        function updateButtonsState() {
+            for (const itemName in inventoryCounts) {
+                const qtySpan = document.getElementById(`qty-${itemName}`);
+                const btn = document.getElementById(`btn-${itemName}`);
+                if (qtySpan && btn) {
+                    qtySpan.innerText = inventoryCounts[itemName];
+                    if (inventoryCounts[itemName] <= 0) {
+                        btn.disabled = true;
+                        btn.innerText = "已尽";
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = "出让";
+                    }
+                }
+            }
+        }
+
+        function clearCart() {
+            document.getElementById('cartInput').value = '';
+            inventoryCounts = {};
+            if (document.getElementById('sellArea').classList.contains('active')) {
+                parseSellData();
+            }
+        }
+
+        function confirmTransaction() {
+            const cartText = document.getElementById('cartInput').value.trim();
+            if (!cartText) {
+                alert("契约为空，请选定交易项目。");
+                return;
+            }
+
+            const formattedText = cartText.replace(/\n/g, '，');
+            const command = `/send 金鳞商会确认交易：${formattedText} | /trigger`;
+
+            if (typeof triggerSlash === 'function') {
+                triggerSlash(command);
+                document.getElementById('cartInput').value = '';
+            } else {
+                console.log("模拟发送交易指令: " + command);
+            }
+        }
+
+        window.onload = function() {
+            initRarityTags();
+        };
+    </script>
+</body>
+</html>

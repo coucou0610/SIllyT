@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arasaka Status Bar - Balanced</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Noto+Sans+SC:wght@400;700&display=swap');
+    </style>
+</head>
+<body>
+    <style>
+        :root {
+            --arasaka-red: #D7211E;
+            --arasaka-black: #0A0A0A;
+            --arasaka-grey: #909090;
+            --arasaka-light: #E0E0E0;
+            --font-main: 'Noto Sans SC', 'Roboto Mono', sans-serif;
+            --font-data: 'Roboto Mono', monospace;
+        }
+
+        .status-bar-container {
+            font-family: var(--font-main);
+            width: 100%;
+            max-width: 900px;
+            margin: 10px auto;
+            background-color: var(--arasaka-black);
+            border: 1px solid var(--arasaka-red);
+            box-shadow: 0 0 12px rgba(215, 33, 30, 0.5), inset 0 0 8px rgba(215, 33, 30, 0.3);
+            display: flex;
+            align-items: stretch;
+            overflow: hidden;
+        }
+
+        /* Logo区域 - 100x100 */
+        .status-bar-logo {
+            flex: 0 0 130px;
+            background-color: var(--arasaka-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px;
+            border-right: 1px solid var(--arasaka-red);
+        }
+
+        .status-bar-logo div {
+            width: 100px;
+            height: 100px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        /* 右侧信息区 - 舒适间距 */
+        .status-bar-info {
+            flex-grow: 1;
+            padding: 6px 12px;        /* 比极致版宽松 */
+            display: flex;
+            flex-direction: column;
+            gap: 4px;                 /* 上下两行间距4px */
+            background-image:
+                linear-gradient(rgba(215, 33, 30, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(215, 33, 30, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        .status-bar-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-size: 0.9em;
+            color: var(--arasaka-grey);
+            padding-bottom: 4px;      /* 比极致版稍大 */
+            border-bottom: 1px dashed rgba(144, 144, 144, 0.3);
+        }
+
+        .status-bar-top-row span {
+            font-family: var(--font-data);
+            color: var(--arasaka-light);
+        }
+
+        .status-bar-bottom-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 4px 12px;           /* 行间距4px，列间距12px */
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;         /* 略微舒适的行高 */
+        }
+
+        .info-label {
+            font-size: 0.75em;
+            color: var(--arasaka-grey);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--arasaka-red);
+            padding-bottom: 1px;      /* 稍微留一点空间 */
+            margin-bottom: 2px;       /* 标签与数值间距2px */
+            width: fit-content;
+        }
+
+        .info-value {
+            font-family: var(--font-data);
+            font-size: 0.95em;
+            color: var(--arasaka-light);
+            font-weight: 700;
+        }
+
+        .performance-value {
+            animation: text-flicker 3s linear infinite;
+        }
+
+        @keyframes text-flicker {
+            0% { opacity: 0.9; }
+            5% { opacity: 1; }
+            10% { opacity: 0.85; }
+            20% { opacity: 1; }
+            30% { opacity: 0.95; }
+            100% { opacity: 0.9; }
+        }
+    </style>
+
+    <div class="status-bar-container">
+        <div class="status-bar-logo">
+            <div style="background-image: url('https://files.catbox.moe/qoxn2j.png');"></div>
+        </div>
+        <div class="status-bar-info">
+            <div class="status-bar-top-row">
+                <div class="time-block">
+                    <span>$1</span> | <span>$2</span> | <span style="color: var(--arasaka-red);">$3</span> [<span>$4</span>]
+                </div>
+                <div class="location-block">
+                    <span>$5</span> | <span>$6</span>
+                </div>
+            </div>
+            <div class="status-bar-bottom-row">
+                <div class="info-item"><span class="info-label">员工姓名</span><span class="info-value">$7</span></div>
+                <div class="info-item"><span class="info-label">员工编号</span><span class="info-value">$8</span></div>
+                <div class="info-item"><span class="info-label">所属部门</span><span class="info-value">$9</span></div>
+                <div class="info-item"><span class="info-label">行政职级</span><span class="info-value">$10</span></div>
+                <div class="info-item"><span class="info-label">账户余额 (€$)</span><span class="info-value">$11</span></div>
+                <div class="info-item"><span class="info-label">月薪 (€$)</span><span class="info-value">$12</span></div>
+                <div class="info-item"><span class="info-label">下次发薪日</span><span class="info-value">$13</span></div>
+                <div class="info-item"><span class="info-label">绩效评级</span><span class="info-value performance-value" id="arasaka-performance">$14</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const perfElement = document.getElementById('arasaka-performance');
+            if (!perfElement) return;
+            const rating = perfElement.textContent.trim().toUpperCase();
+            let color = 'var(--arasaka-light)';
+            let shadowColor = 'rgba(224, 224, 224, 0.5)';
+            if (rating.includes('A')) {
+                color = '#43A047';
+                shadowColor = 'rgba(67, 160, 71, 0.7)';
+            } else if (rating.includes('C')) {
+                color = '#FBC02D';
+                shadowColor = 'rgba(251, 192, 45, 0.7)';
+            } else if (rating.includes('D')) {
+                color = 'var(--arasaka-red)';
+                shadowColor = 'rgba(215, 33, 30, 0.8)';
+            }
+            perfElement.style.color = color;
+            perfElement.style.textShadow = `0 0 8px ${shadowColor}`;
+        })();
+    </script>
+</body>
+</html>

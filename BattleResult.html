@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+@import url("https://fontsapi.zeoseven.com/929/main/result.css");
+
+.battle-result-panel {
+    font-family: "Z Labs RoundPix 16px M CN", monospace;
+    width: 100%;
+    max-width: 520px;
+    margin: 10px auto;
+    padding: 10px 12px;
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    color: #dbe6f3;
+    background:
+        linear-gradient(180deg, rgba(255,255,255,0.04), rgba(0,0,0,0.18)),
+        repeating-linear-gradient(135deg, rgba(255,255,255,0.025) 0px, rgba(255,255,255,0.025) 6px, transparent 6px, transparent 12px),
+        linear-gradient(135deg, #151c24, #202b36 48%, #10161d);
+    border: 2px solid var(--threat-color, #8aa0b6);
+    border-radius: 10px 3px 10px 3px;
+    box-shadow:
+        3px 3px 0 rgba(0,0,0,0.45),
+        inset 0 0 0 1px rgba(255,255,255,0.06),
+        0 0 12px var(--threat-glow, rgba(138,160,182,0.22));
+    image-rendering: pixelated;
+}
+
+.battle-result-panel::before {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 8%;
+    right: 8%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--threat-color, #8aa0b6), transparent);
+}
+
+.battle-result-panel::after {
+    content: "COMBAT RESULT";
+    position: absolute;
+    right: 10px;
+    bottom: 6px;
+    font-size: 0.56rem;
+    letter-spacing: 1.4px;
+    color: rgba(210,225,240,0.18);
+}
+
+.battle-header {
+    text-align: center;
+    padding-bottom: 6px;
+    margin-bottom: 7px;
+    border-bottom: 1px dashed rgba(150,170,190,0.35);
+}
+
+.battle-kicker {
+    display: inline-block;
+    padding: 2px 9px;
+    margin-bottom: 4px;
+    font-size: 0.64rem;
+    letter-spacing: 1.3px;
+    color: #10161d;
+    background: var(--threat-color, #8aa0b6);
+    border-radius: 20px;
+    box-shadow: 0 0 8px var(--threat-glow, rgba(138,160,182,0.25));
+}
+
+.battle-title {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    color: #edf5ff;
+    text-shadow: 1px 1px 0 #000;
+    word-break: break-word;
+}
+
+.compact-line {
+    padding: 6px 7px;
+    margin-bottom: 6px;
+    background: rgba(0,0,0,0.20);
+    border: 1px solid rgba(160,180,200,0.15);
+    border-left: 3px solid var(--threat-color, #8aa0b6);
+    border-radius: 6px;
+    font-size: 0.76rem;
+    line-height: 1.55;
+    word-break: break-word;
+}
+
+.stat-label {
+    color: #8fa8c2;
+    margin-right: 4px;
+    white-space: nowrap;
+}
+
+.rarity-tag {
+    display: inline-block;
+    padding: 1px 6px;
+    margin-right: 3px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    color: #10161d;
+    background: var(--threat-color, #8aa0b6);
+    box-shadow: 0 0 7px var(--threat-glow, rgba(138,160,182,0.25));
+}
+
+.enemy-name,
+.drop-name {
+    color: #edf5ff;
+}
+
+.enemy-unit {
+    display: inline;
+}
+
+.battle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.battle-stat {
+    padding: 6px 7px;
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(160,180,200,0.16);
+    border-radius: 6px;
+    font-size: 0.76rem;
+    line-height: 1.45;
+}
+
+.exp-value {
+    color: #9fdc8f;
+}
+
+.gold-value {
+    color: #f0cf7a;
+}
+
+.drop-box {
+    border-left-color: var(--drop-color, #d4af37);
+}
+
+.drop-rarity {
+    display: inline-block;
+    padding: 1px 6px;
+    margin-right: 4px;
+    border-radius: 10px;
+    font-size: 0.68rem;
+    color: #10161d;
+    background: var(--drop-color, #d4af37);
+    box-shadow: 0 0 7px var(--drop-glow, rgba(212,175,55,0.25));
+}
+
+.drop-group {
+    display: inline;
+    margin-right: 8px;
+}
+
+.tactics-box {
+    border-left-color: #8aa0b6;
+}
+
+.tactics-value {
+    color: #dbe6f3;
+}
+
+.comment-box {
+    border-left-color: var(--threat-color, #8aa0b6);
+    font-style: italic;
+}
+
+.comment-value {
+    color: #b8c7d8;
+}
+
+.battle-result-panel.low {
+    --threat-color: #6dbf73;
+    --threat-glow: rgba(109,191,115,0.28);
+}
+
+.battle-result-panel.disaster {
+    --threat-color: #5ca9e6;
+    --threat-glow: rgba(92,169,230,0.30);
+}
+
+.battle-result-panel.nightmare {
+    --threat-color: #9b6ddb;
+    --threat-glow: rgba(155,109,219,0.32);
+}
+
+.battle-result-panel.catastrophe {
+    --threat-color: #e6a34a;
+    --threat-glow: rgba(230,163,74,0.34);
+}
+
+.battle-result-panel.divine {
+    --threat-color: #d94f4f;
+    --threat-glow: rgba(217,79,79,0.38);
+}
+
+.drop-group.drop-broken {
+    --drop-color: #7b6b5d;
+    --drop-glow: rgba(123,107,93,0.22);
+}
+
+.drop-group.drop-normal {
+    --drop-color: #8aa0b6;
+    --drop-glow: rgba(138,160,182,0.25);
+}
+
+.drop-group.drop-rare {
+    --drop-color: #5ca9e6;
+    --drop-glow: rgba(92,169,230,0.30);
+}
+
+.drop-group.drop-epic {
+    --drop-color: #9b6ddb;
+    --drop-glow: rgba(155,109,219,0.32);
+}
+
+.drop-group.drop-legendary {
+    --drop-color: #e6a34a;
+    --drop-glow: rgba(230,163,74,0.34);
+}
+
+@media (max-width: 420px) {
+    .battle-result-panel {
+        max-width: calc(100% - 10px);
+        padding: 9px 10px;
+    }
+
+    .battle-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .battle-title {
+        font-size: 0.8rem;
+    }
+
+    .battle-stat,
+    .compact-line {
+        font-size: 0.7rem;
+    }
+
+    .rarity-tag,
+    .drop-rarity {
+        font-size: 0.64rem;
+    }
+}
+</style>
+</head>
+
+<body>
+<div class="battle-result-panel" id="battleResultPanel">
+    <div class="battle-header">
+        <div class="battle-kicker">TARGET DOWN</div>
+        <div class="battle-title">$1</div>
+    </div>
+
+    <div class="compact-line">
+        <span class="stat-label">讨伐对象：</span>
+        <span id="enemyLine" data-enemies="$2"></span>
+    </div>
+
+    <div class="battle-grid">
+        <div class="battle-stat">
+            <span class="stat-label">EXP：</span>
+            <span class="exp-value">$3</span>
+        </div>
+
+        <div class="battle-stat">
+            <span class="stat-label">Gold：</span>
+            <span class="gold-value">$4</span>
+        </div>
+    </div>
+
+    <div class="compact-line drop-box">
+        <span class="stat-label">获得物品：</span>
+        <span id="dropLine" data-drops="$5"></span>
+    </div>
+
+    <div class="compact-line tactics-box">
+        <span class="stat-label">战术评价：</span>
+        <span class="tactics-value">$6</span>
+    </div>
+
+    <div class="compact-line comment-box">
+        <span class="stat-label">系统提示：</span>
+        <span class="comment-value">$7</span>
+    </div>
+</div>
+
+<script>
+(function () {
+    const panel = document.getElementById("battleResultPanel");
+    const enemyLine = document.getElementById("enemyLine");
+    const dropLine = document.getElementById("dropLine");
+
+    if (!panel || !enemyLine || !dropLine) return;
+
+    const rawEnemies = enemyLine.getAttribute("data-enemies") || "";
+    const rawDrops = dropLine.getAttribute("data-drops") || "";
+
+    const enemyMatches = [...rawEnemies.matchAll(/\[Enemy\|([^|]*)\|([^|]*)\|([^\]]*)\]/g)];
+
+    enemyLine.innerHTML = enemyMatches.map((m) => {
+        return `<span class="enemy-unit"><span class="rarity-tag">${m[1]}</span><span class="enemy-name">${m[2]}×${m[3]}</span></span>`;
+    }).join("、");
+
+    if (rawEnemies.includes("神灾级")) {
+        panel.classList.add("divine");
+    } else if (rawEnemies.includes("天灾级")) {
+        panel.classList.add("catastrophe");
+    } else if (rawEnemies.includes("噩梦级")) {
+        panel.classList.add("nightmare");
+    } else if (rawEnemies.includes("灾害级")) {
+        panel.classList.add("disaster");
+    } else if (rawEnemies.includes("低危级")) {
+        panel.classList.add("low");
+    }
+
+    const dropMatches = [...rawDrops.matchAll(/\[Drop\|([^|]*)\|([^\]]*)\]/g)];
+    const groupedDrops = {};
+
+    dropMatches.forEach((m) => {
+        const rarity = m[1].trim();
+        const names = m[2].split(/[,，、]/).map(x => x.trim()).filter(Boolean);
+
+        if (!groupedDrops[rarity]) {
+            groupedDrops[rarity] = [];
+        }
+
+        groupedDrops[rarity].push(...names);
+    });
+
+    dropLine.innerHTML = Object.entries(groupedDrops).map(([rarity, names]) => {
+        let cls = "drop-normal";
+
+        if (rarity.includes("传说")) {
+            cls = "drop-legendary";
+        } else if (rarity.includes("史诗")) {
+            cls = "drop-epic";
+        } else if (rarity.includes("稀有") || rarity.includes("精良")) {
+            cls = "drop-rare";
+        } else if (rarity.includes("破损")) {
+            cls = "drop-broken";
+        }
+
+        return `<span class="drop-group ${cls}"><span class="drop-rarity">${rarity}</span><span class="drop-name">${names.join("、")}</span></span>`;
+    }).join("");
+})();
+</script>
+</body>
+</html>

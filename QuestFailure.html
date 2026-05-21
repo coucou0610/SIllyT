@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url("https://fontsapi.zeoseven.com/929/main/result.css");
+    </style>
+</head>
+<body>
+    <style>
+        .failure-replay-panel {
+            font-family: "Z Labs RoundPix 16px M CN", monospace;
+            width: 100%;
+            max-width: 520px;
+            margin: 10px auto;
+            padding: 12px 14px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            color: #ead6d0;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.05), rgba(120,20,20,0.10)),
+                repeating-linear-gradient(135deg, #2a1418 0px, #2a1418 7px, #1b1014 7px, #1b1014 14px);
+            border: 2px solid #8e312a;
+            border-radius: 12px 4px 12px 4px;
+            box-shadow:
+                3px 3px 0 rgba(20, 0, 0, 0.45),
+                inset 0 0 0 1px rgba(255,180,170,0.14),
+                0 0 14px rgba(180,40,35,0.30);
+            image-rendering: pixelated;
+            animation: failure-drop 0.45s ease-out;
+        }
+
+        @keyframes failure-drop {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .failure-replay-panel::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 8%;
+            right: 8%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,90,90,0.85), transparent);
+            pointer-events: none;
+        }
+
+        .failure-replay-panel::after {
+            content: "✖";
+            position: absolute;
+            right: 10px;
+            bottom: 6px;
+            color: rgba(220,70,70,0.28);
+            font-size: 1.1rem;
+            pointer-events: none;
+            animation: failure-warning 1.4s ease-in-out infinite;
+        }
+
+        @keyframes failure-warning {
+            0%, 100% { opacity: 0.28; transform: scale(1); }
+            50% { opacity: 0.75; transform: scale(1.18); }
+        }
+
+        .failure-header {
+            text-align: center;
+            padding-bottom: 6px;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed rgba(220,90,90,0.40);
+            position: relative;
+        }
+
+        .failure-kicker {
+            font-size: 0.72rem;
+            color: #c77a72;
+            letter-spacing: 1.5px;
+            margin-bottom: 3px;
+        }
+
+        .failure-title {
+            font-size: 0.96rem;
+            line-height: 1.4;
+            color: #ffb0a8;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.75);
+            word-break: break-word;
+        }
+
+        .failure-title::before {
+            content: "◇ ";
+            color: #d95763;
+        }
+
+        .failure-title::after {
+            content: " ◇";
+            color: #d95763;
+        }
+
+        .failure-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 5px;
+            font-size: 0.8rem;
+        }
+
+        .failure-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            line-height: 1.5;
+        }
+
+        .failure-label {
+            flex-shrink: 0;
+            color: #d88b82;
+            text-shadow: 1px 1px 0 rgba(0,0,0,0.65);
+            white-space: nowrap;
+        }
+
+        .failure-value {
+            flex: 1;
+            color: #ead6d0;
+            word-break: break-word;
+        }
+
+        .failure-scene .failure-value {
+            color: #ffb0a8;
+        }
+
+        .failure-penalty .failure-value {
+            color: #d95763;
+        }
+
+        .failure-loss .failure-value {
+            color: #c9a0ff;
+        }
+
+        .failure-comment {
+            margin-top: 6px;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(220,90,90,0.30);
+            display: flex;
+            gap: 5px;
+            font-size: 0.78rem;
+            line-height: 1.5;
+        }
+
+        .failure-comment .failure-label {
+            color: #ff9a8f;
+        }
+
+        .failure-comment .failure-value {
+            color: #ffd0ca;
+            font-style: italic;
+        }
+
+        @media (min-width: 520px) {
+            .failure-content {
+                grid-template-columns: 1fr 1fr;
+                column-gap: 10px;
+            }
+
+            .failure-scene {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .failure-replay-panel {
+                max-width: calc(100% - 10px);
+                padding: 10px 11px;
+            }
+
+            .failure-title {
+                font-size: 0.88rem;
+            }
+
+            .failure-content,
+            .failure-comment {
+                font-size: 0.74rem;
+            }
+
+            .failure-kicker {
+                font-size: 0.68rem;
+            }
+        }
+    </style>
+
+    <div class="failure-replay-panel">
+        <div class="failure-header">
+            <div class="failure-kicker">PUBLIC EXECUTION</div>
+            <div class="failure-title">$1</div>
+        </div>
+
+        <div class="failure-content">
+            <div class="failure-row failure-scene">
+                <span class="failure-label">处刑回放：</span>
+                <span class="failure-value">$2</span>
+            </div>
+
+            <div class="failure-row failure-penalty">
+                <span class="failure-label">惩罚挂载：</span>
+                <span class="failure-value">$3</span>
+            </div>
+
+            <div class="failure-row failure-loss">
+                <span class="failure-label">数值损失：</span>
+                <span class="failure-value">$4</span>
+            </div>
+        </div>
+
+        <div class="failure-comment">
+            <span class="failure-label">系统评价：</span>
+            <span class="failure-value">$5</span>
+        </div>
+    </div>
+</body>
+</html>

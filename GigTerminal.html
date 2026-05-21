@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>赛博朋克 2077 · 委托终端</title>
+    <!-- 使用统一字体 -->
+    <style>
+        @import url("https://fontsapi.zeoseven.com/10/main/result.css");
+    </style>
+</head>
+<body>
+    <style>
+        :root {
+            --font-main: "WenQuanYi Bitmap Song 16px", "Microsoft YaHei", sans-serif;
+            --color-primary-yellow: #FFD60A;
+            --color-secondary-cyan: #00E5FF;
+            --color-accent-magenta: #F50057;
+            --color-background-dark: #0d0d1a;
+            --color-text-light: #e0e0e0;
+        }
+
+        .gig-terminal-wrapper {
+            font-family: var(--font-main);
+            width: 100%;
+            max-width: 450px; /* 控制整体宽度，使其紧凑 */
+            margin: 15px auto;
+            background: linear-gradient(145deg, rgba(13, 13, 26, 0.95), rgba(26, 26, 43, 0.95));
+            border: 1px solid var(--color-primary-yellow);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            box-shadow: 0 0 12px var(--color-primary-yellow), 0 0 25px var(--color-accent-magenta);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 扫描线动画 */
+        .gig-terminal-wrapper::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--color-secondary-cyan);
+            box-shadow: 0 0 10px var(--color-secondary-cyan);
+            animation: scan-line-anim 3s linear infinite;
+        }
+        @keyframes scan-line-anim {
+            0% { transform: translateY(-10px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(2000%); opacity: 0; }
+        }
+
+        .gig-terminal-header {
+            padding: 5px 10px;
+            background: rgba(0,0,0,0.3);
+            text-align: center;
+            font-size: 1em;
+            color: var(--color-primary-yellow);
+            border-bottom: 1px solid rgba(255, 214, 10, 0.5);
+        }
+        .gig-terminal-header::before { content: '//: INCOMING GIG //: '; color: var(--color-secondary-cyan); }
+
+        .gig-terminal-body {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Vitals 状态栏样式 */
+        .vitals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 5px;
+            border: 1px solid rgba(0, 229, 255, 0.3);
+            padding: 5px;
+        }
+        .vitals-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3px;
+            background: rgba(0,0,0,0.2);
+        }
+        .vitals-label {
+            font-size: 0.7em;
+            color: var(--color-secondary-cyan);
+            opacity: 0.8;
+        }
+        .vitals-value {
+            font-size: 0.9em;
+            color: var(--color-text-light);
+        }
+
+        /* Gig 委托详情样式 */
+        .gig-details {
+            border: 1px solid rgba(255, 214, 10, 0.5);
+            padding: 8px;
+        }
+
+        .gig-title-line {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed rgba(255, 214, 10, 0.3);
+            margin-bottom: 5px;
+            padding-bottom: 3px;
+        }
+        .gig-title {
+            font-size: 1.1em;
+            color: var(--color-primary-yellow);
+            font-weight: normal;
+        }
+        .gig-level-type { font-size: 0.8em; color: var(--color-text-light); }
+
+        .gig-description {
+            font-size: 0.9em;
+            color: var(--color-text-light);
+            margin-bottom: 8px;
+            padding: 5px;
+            background: rgba(0,0,0,0.2);
+            border-left: 2px solid var(--color-accent-magenta);
+            min-height: 40px; /* 保证一定高度 */
+        }
+
+        .gig-rewards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            font-size: 0.85em;
+        }
+        .gig-reward-item { display: flex; justify-content: space-between; padding: 2px 4px; background: rgba(0,0,0,0.3); }
+        .gig-reward-label { color: var(--color-secondary-cyan); }
+        .gig-reward-value { color: var(--color-primary-yellow); }
+    </style>
+
+    <div class="gig-terminal-wrapper">
+        <div class="gig-terminal-header"></div>
+        <div class="gig-terminal-body">
+            <!-- Vitals Section -->
+            <div class="vitals-grid">
+                <div class="vitals-item"><span class="vitals-label">生命体征</span><span class="vitals-value">$1</span></div>
+                <div class="vitals-item"><span class="vitals-label">神经负荷</span><span class="vitals-value">$2</span></div>
+                <div class="vitals-item"><span class="vitals-label">义体同步率</span><span class="vitals-value">$3</span></div>
+                <div class="vitals-item"><span class="vitals-label">账户余额</span><span class="vitals-value">$4</span></div>
+            </div>
+
+            <!-- Gig Section -->
+            <div class="gig-details">
+                <div class="gig-title-line">
+                    <span id="gigTitle" class="gig-title">$5</span>
+                    <span class="gig-level-type">$6 / $7</span>
+                </div>
+                <p class="gig-description">$8</p>
+                <div class="gig-rewards-grid">
+                    <div class="gig-reward-item"><span class="gig-reward-label">报酬:</span><span class="gig-reward-value">$10</span></div>
+                    <div class="gig-reward-item"><span class="gig-reward-label">声望:</span><span class="gig-reward-value">$11</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        // 动态设置危险等级颜色
+        const gigTitleElement = document.getElementById('gigTitle');
+        if (gigTitleElement) {
+            gigTitleElement.style.textShadow = `0 0 8px $9`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,1238 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异世界退休计划(破灭版)</title>
+    <style>
+        @import url("https://fontsapi.zeoseven.com/2001/main/result.css");
+
+        :root {
+            --parchment-base: #f4e8d2;
+            --parchment-dark: #e8d8ba;
+            --parchment-light: #fdfaf2;
+            --ink-black: #2c251f;
+            --ink-light: #5a4b41;
+            --accent-gold: #c49a45;
+            --accent-red: #8e312a;
+            --border-style: 2px solid var(--accent-gold);
+
+            --bg-color: var(--parchment-base);
+            --text-color: var(--ink-black);
+            --card-bg: var(--parchment-light);
+            --button-bg: #8B5A2B;
+            --button-hover: #6b4420;
+            --button-text: #fff;
+
+            --font-main: "ZhengGeDianHei 16", sans-serif;
+            --shadow-soft: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1a1512;
+            --text-color: #d8caba;
+            --card-bg: #2a221d;
+            --border-style: 2px solid #5a4833;
+            --ink-black: #e6dac3;
+            --ink-light: #a89886;
+            --accent-gold: #d4af37;
+            --button-bg: #4a3424;
+            --button-hover: #3a281c;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.6);
+            background-image: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.05"><filter id="noise"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23noise)"/></svg>');
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: var(--font-main);
+            font-weight: normal;
+            min-width: 0;
+        }
+
+        html, body {
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            transition: background-color 0.5s, color 0.5s;
+            overflow-x: hidden;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" opacity="0.1"><filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.5" numOctaves="3" stitchTiles="stitch"/></filter><rect width="100%" height="100%" filter="url(%23n)"/></svg>');
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .floating-particles {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--accent-gold);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float-up infinite linear;
+        }
+
+        @keyframes float-up {
+            from { transform: translateY(110vh) scale(1); opacity: 0; }
+            10%  { opacity: 0.5; }
+            90%  { opacity: 0.5; }
+            to   { transform: translateY(-10vh) scale(0.5); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            position: relative;
+            z-index: 10;
+            background: var(--card-bg);
+            border: var(--border-style);
+            border-radius: 12px;
+            box-shadow: var(--shadow-soft), inset 0 0 40px rgba(0,0,0,0.02);
+            padding: 40px;
+            width: calc(100% - 24px);
+        }
+
+        .top-controls {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 12px;
+            z-index: 100;
+            flex-wrap: wrap;
+        }
+
+        .icon-btn {
+            background: none;
+            border: 1px solid var(--accent-gold);
+            color: var(--text-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s;
+            flex-shrink: 0;
+        }
+
+        .icon-btn:hover {
+            background: var(--accent-gold);
+            color: #fff;
+            transform: scale(1.1);
+        }
+
+        audio { display: none; }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px dashed var(--accent-gold);
+            position: relative;
+        }
+
+        .header::after {
+            content: '⚔️';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 0 10px;
+            font-size: 20px;
+        }
+
+        .main-title {
+            font-size: 2.2em;
+            color: var(--accent-red);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            margin-bottom: 10px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+
+        [data-theme="dark"] .main-title {
+            color: #e57373;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .sub-title {
+            font-size: 1.1em;
+            color: var(--ink-light);
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .author-info {
+            font-size: 0.9em;
+            color: var(--accent-gold);
+            font-style: italic;
+            line-height: 1.7;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 25px;
+            background: var(--parchment-dark);
+            border: 1px solid var(--accent-gold);
+            color: var(--text-color);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: 0.3s;
+            font-size: 1.1em;
+            white-space: normal;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        [data-theme="dark"] .tab-btn {
+            background: #3a2e24;
+        }
+
+        .tab-btn:hover,
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: #fff;
+            box-shadow: 0 2px 8px rgba(196, 154, 69, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-box {
+            background: rgba(0,0,0,0.02);
+            border: 1px solid var(--accent-gold);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        [data-theme="dark"] .section-box {
+            background: rgba(255,255,255,0.02);
+        }
+
+        .section-box h3 {
+            color: var(--accent-gold);
+            margin-bottom: 15px;
+            font-size: 1.4em;
+            line-height: 1.5;
+        }
+
+        .section-box p,
+        .section-box li {
+            line-height: 1.8;
+            margin-bottom: 10px;
+            word-break: break-word;
+            overflow-wrap: anywhere;
+        }
+
+        .section-box ul {
+            padding-left: 20px;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 480px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: var(--border-style);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+            height: 100%;
+        }
+
+        .char-slide {
+            min-width: 100%;
+            height: 100%;
+            position: relative;
+            display: flex;
+            align-items: stretch;
+        }
+
+        .char-img-area {
+            flex: 0 0 270px;
+            aspect-ratio: 9 / 16;
+            overflow: hidden;
+            position: relative;
+            cursor: zoom-in;
+        }
+
+        .char-img-area img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+            display: block;
+        }
+
+        .char-img-area:hover img {
+            transform: scale(1.05);
+        }
+
+        .char-info-area {
+            flex: 1;
+            padding: 25px;
+            background: rgba(253, 250, 242, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            overflow-y: auto;
+        }
+
+        [data-theme="dark"] .char-info-area {
+            background: rgba(42, 34, 29, 0.95);
+        }
+
+        .char-name {
+            font-size: 2em;
+            color: var(--accent-red);
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--accent-gold);
+            padding-bottom: 5px;
+            line-height: 1.4;
+        }
+
+        .char-desc {
+            font-size: 1em;
+            line-height: 1.7;
+            color: var(--ink-black);
+        }
+
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .nav-btn:hover {
+            background: var(--accent-gold);
+        }
+
+        .prev-btn { left: 10px; }
+        .next-btn { right: 10px; }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 10;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: calc(100% - 24px);
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.5);
+            border: 1px solid #000;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .dot.active {
+            background: var(--accent-gold);
+        }
+
+        .sys-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 15px;
+            min-width: 0;
+        }
+
+        .form-group.full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group label {
+            font-size: 1.1em;
+            color: var(--accent-red);
+            margin-bottom: 8px;
+            font-weight: bold;
+            line-height: 1.6;
+            word-break: break-word;
+        }
+
+        .form-group input[type="text"],
+        .form-group select {
+            padding: 12px;
+            border: 1px solid var(--accent-gold);
+            border-radius: 6px;
+            background: var(--parchment-light);
+            color: var(--text-color);
+            font-size: 1em;
+            transition: 0.3s;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        [data-theme="dark"] .form-group input[type="text"],
+        [data-theme="dark"] .form-group select {
+            background: #1a1512;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            box-shadow: 0 0 8px rgba(196, 154, 69, 0.5);
+        }
+
+        .submit-btn {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background: var(--button-bg);
+            color: var(--button-text);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            cursor: pointer;
+            transition: 0.3s;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+            margin-top: 10px;
+            width: 100%;
+            white-space: normal;
+            line-height: 1.5;
+        }
+
+        .submit-btn:hover {
+            background: var(--button-hover);
+            transform: translateY(-2px);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            transform: scale(0);
+            animation: ripple-anim 0.6s linear;
+            background-color: rgba(196, 154, 69, 0.7);
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        @keyframes ripple-anim {
+            to { transform: scale(4); opacity: 0; }
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            padding: 16px;
+        }
+
+        .lightbox.active {
+            display: flex;
+            animation: fadeIn 0.3s;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            border: 2px solid var(--accent-gold);
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(196,154,69,0.3);
+        }
+
+        .close-lightbox {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            line-height: 1;
+        }
+
+        /* ===== 平板及以下 ===== */
+        @media (max-width: 900px) {
+            .container {
+                padding: 32px 24px;
+            }
+
+            .main-title {
+                font-size: 1.9em;
+            }
+
+            .sub-title {
+                font-size: 1em;
+            }
+        }
+
+        /* ===== 手机重点修正 ===== */
+        @media (max-width: 768px) {
+            .container {
+                width: calc(100% - 16px);
+                margin: 12px auto;
+                padding: 18px 14px 20px;
+            }
+
+            .top-controls {
+                position: static;
+                justify-content: center;
+                margin-bottom: 16px;
+            }
+
+            .header {
+                margin-bottom: 28px;
+                padding-bottom: 16px;
+            }
+
+            .main-title {
+                font-size: 1.45em;
+                line-height: 1.5;
+                padding: 0 2px;
+            }
+
+            .sub-title {
+                font-size: 0.96em;
+                line-height: 1.7;
+            }
+
+            .author-info {
+                font-size: 0.84em;
+                line-height: 1.7;
+            }
+
+            .tabs {
+                gap: 8px;
+                margin-bottom: 22px;
+            }
+
+            .tab-btn {
+                flex: 1 1 calc(50% - 8px);
+                min-width: 120px;
+                padding: 10px 12px;
+                font-size: 0.98em;
+            }
+
+            .section-box {
+                padding: 14px 12px;
+            }
+
+            .section-box h3 {
+                font-size: 1.15em;
+                margin-bottom: 12px;
+            }
+
+            .section-box p,
+            .section-box li {
+                line-height: 1.75;
+                font-size: 0.95em;
+            }
+
+            .carousel-container {
+                height: auto;
+                min-height: 400px;
+            }
+
+            .char-slide {
+                flex-direction: column;
+            }
+
+            .char-img-area {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+                aspect-ratio: 9 / 16;
+            }
+
+            .char-info-area {
+                width: 100%;
+                padding: 14px 12px 18px;
+                max-height: none;
+            }
+
+            .char-name {
+                font-size: 1.35em;
+                margin-bottom: 8px;
+            }
+
+            .char-desc {
+                font-size: 0.92em;
+                line-height: 1.7;
+                display: block;
+                overflow: visible;
+            }
+
+            .nav-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .sys-form {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .form-group,
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+            .form-group label {
+                font-size: 1em;
+                margin-bottom: 6px;
+            }
+
+            .form-group input[type="text"],
+            .form-group select {
+                font-size: 16px; /* 防止 iPhone 自动缩放 */
+                padding: 12px 10px;
+                line-height: 1.5;
+            }
+
+            .submit-btn {
+                font-size: 1.02em;
+                padding: 14px 12px;
+                line-height: 1.6;
+            }
+
+            #tab-create .section-box {
+                padding: 14px 10px;
+            }
+
+            #tab-create p[style*="text-align: center"] {
+                font-size: 0.92em !important;
+                line-height: 1.75 !important;
+                margin-bottom: 12px !important;
+            }
+
+            .close-lightbox {
+                top: 10px;
+                right: 18px;
+                font-size: 34px;
+            }
+        }
+
+        /* ===== 更小手机 ===== */
+        @media (max-width: 480px) {
+            .container {
+                width: calc(100% - 12px);
+                padding: 14px 10px 16px;
+            }
+
+            .icon-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 18px;
+            }
+
+            .main-title {
+                font-size: 1.2em;
+                line-height: 1.55;
+            }
+
+            .sub-title {
+                font-size: 0.9em;
+            }
+
+            .author-info {
+                font-size: 0.78em;
+            }
+
+            .tab-btn {
+                flex: 1 1 100%;
+                min-width: 0;
+                font-size: 0.92em;
+                padding: 9px 10px;
+            }
+
+            .section-box {
+                padding: 12px 10px;
+            }
+
+            .section-box h3 {
+                font-size: 1.05em;
+            }
+
+            .section-box p,
+            .section-box li {
+                font-size: 0.9em;
+            }
+
+            .char-img-area {
+                max-width: 260px;
+            }
+
+            .char-name {
+                font-size: 1.2em;
+            }
+
+            .char-desc {
+                font-size: 0.88em;
+            }
+
+            .carousel-dots {
+                bottom: 10px;
+                gap: 6px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .form-group label {
+                font-size: 0.96em;
+            }
+
+            .form-group input[type="text"],
+            .form-group select {
+                padding: 11px 9px;
+                font-size: 16px;
+            }
+
+            .submit-btn {
+                font-size: 0.95em;
+                padding: 13px 10px;
+            }
+
+            #tab-create p[style*="text-align: center"] {
+                font-size: 0.86em !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="bgm" loop>
+        <source src="https://files.catbox.moe/7el6lx.MP3" type="audio/mpeg">
+    </audio>
+
+    <div class="floating-particles" id="particles"></div>
+
+    <div class="container">
+        <div class="top-controls">
+            <button class="icon-btn" id="music-btn" title="播放/暂停音乐">♪</button>
+            <button class="icon-btn" id="theme-btn" title="日/夜主题切换">☾</button>
+        </div>
+
+        <div class="header">
+            <h1 class="main-title">
+                《最強レベルで悠々自適な隠居生活を送るはずが、<br>
+                10人のイケメンたちにロックオンされて退路を断たれました！？<br>
+                〜成長システムで異世界無双〜》
+            </h1>
+            <p class="sub-title">本应疯狂刷级成为最强等级后过上退休生活，<br>反而被10个帅哥彻底盯上而完全无法退休了！？</p>
+            <p class="author-info">原作: CTE电竞助理日常 by 陈小耶<br>IF线改编: 松茸の土瓶蒸し</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-target="tab-rules">使用说明</button>
+            <button class="tab-btn" data-target="tab-bg">背景世界</button>
+            <button class="tab-btn" data-target="tab-chars">可攻略对象</button>
+            <button class="tab-btn" data-target="tab-create">系统·降临设定</button>
+        </div>
+
+        <div id="tab-rules" class="tab-content active">
+            <div class="section-box">
+                <h3>📖 如何开启这场无法退休的异世界之旅？</h3>
+                <p>亲爱的转生者，欢迎来到塞莱斯蒂亚大陆。在此之前，请了解系统的基本规则：</p>
+                <ul>
+                    <li><strong>基础设定：</strong>您将携带“成长系统”降临此界，目标是满级后悠闲养老，但显然系统并不想让您如愿。</li>
+                    <li><strong>核心机制：</strong>本世界拥有明确的RPG系统（人物好感、等级、职业、技能、属性），请不要吝啬查看您的 [个人状态面板]。</li>
+                    <li><strong>修罗场预警：</strong>您的光芒太过耀眼。在您的旅途中，会有十位性格各异的强者不可救药地被您吸引，请谨慎处理他们之间飙升的占有欲与醋意。</li>
+                    <li><strong>了解背景世界和可攻略对象后</strong>请前往<b>【系统·降临设定】</b>板块，认真填写入场问卷，这关乎您落地时的初始待遇与基础属性。填写完毕后点击“确认转生”，系统会自动记录您的设定并开始演化初始剧情。</li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="tab-bg" class="tab-content">
+            <div class="section-box">
+                <h3>🌐 塞莱斯蒂亚大陆概况</h3>
+                <p>这是一个魔法与自然和谐共存的世界。人类、精灵、兽人、卓尔、魅魔甚至是巨龙等各类种族汇聚于此。世界上没有战争，各城邦和平共处，唯一的公敌是危害生态平衡的“魔物”。</p>
+
+                <h3>🗺️ 重点区域索引</h3>
+                <ul>
+                    <li><b>【圣罗兰城都】</b>：绝对的中立枢纽，冒险者公会总部所在地。治安极好。</li>
+                    <li><b>【金鳞商会】</b>：城邦内最大型且老牌的商会，只交易高级品。老板神龙见首不见尾。</li>
+                    <li><b>【白鸦酒馆】</b>：城都内的情报与委托中心。据说老板长得很漂亮。</li>
+                    <li><b>【星辉林地】</b>：城郊的新手区，风景优美，非常适合野餐与史莱姆讨伐。</li>
+                    <li><b>【极境孤峰】</b>：高阶危境。传说山巅住着活了上万年的苍穹龙，满地都是财宝。</li>
+                    <li><b>【暗影棘林】</b>：深邃迷人的地底入口，卓尔精灵的原乡，处处是紫雾与毒素。</li>
+                </ul>
+
+                <h3>🗺️ 开放世界</h3>
+                <p>塞莱斯蒂亚大陆很广阔，圣罗兰城都可能是你的定居所，也有可能只是你新手村的起点。和伙伴一起去探索未知的领域吧，这片大陆有数不清的海洋、山脉、草原、林地等风景。</p>
+            </div>
+        </div>
+
+        <div id="tab-chars" class="tab-content">
+            <div class="carousel-container">
+                <button class="nav-btn prev-btn" id="btn-prev">❮</button>
+                <button class="nav-btn next-btn" id="btn-next">❯</button>
+
+                <div class="carousel-track" id="char-track">
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/bqu61y.JPG" alt="魏月华">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">魏月华</div>
+                            <div class="char-desc"><b>身份：</b>圣罗兰城邦城主 (Lv.MAX)<br><b>特质：</b>种族为人类，27岁，他是圣罗兰城邦的意志化身，他上任城主后建立了一套绝对公平的生存法则。他认为自己作为统治者必须为自己管理下的民众负责，时刻维持理性，因为出色的领导能力，在城邦中深受爱戴。他不仅拥有顶级的魔力储备，更是一位战术大师。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/x7unwo.JPG" alt="桑洛凡">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">桑洛凡</div>
+                            <div class="char-desc"><b>身份：</b>苍穹龙/神秘富商 (Lv.MAX)<br><b>特质：</b>桑洛凡对外是神出鬼没的神秘人类富商，经营着城邦最大的“金鳞商会”。真实身份为居住在“极境孤峰”城堡中的天空之主苍穹龙。龙族是当之无愧的寿星，基础寿命万年以上，苍穹龙拥有极为纤长且矫健的躯干，和一双金灿灿的锐利竖瞳，通体覆盖着银蓝色的鳞片。一旦确认您是他的“唯一财宝”，便是逃至世界尽头也会将您抓入手心。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/tdcld6.jpg" alt="亓谢">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">亓谢</div>
+                            <div class="char-desc"><b>身份：</b>史莱姆王 (Lv.?)<br><b>特质：</b>史莱姆种族的王，长期居住在城郊的“星辉林地”。虽然拥有完美的人类外形，但身体构造由高浓度的以太粘液组成只要星辉林地的以太不枯竭，史莱姆王就能通过不断分裂和重组细胞活下去，对寿命没有概念。他已经在林地里待了太久，久到记不清具体的岁数。他的外貌可以永远停留在最具活力的青年时期，因为对他来说，衰老只是一个可以选择性关闭的程序。对“恋爱”反应迟钝，爱上以后会依靠本能行事——想要将您无死角地包裹与“吞噬”。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/6vxsg4.JPG" alt="孟明赫">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">孟明赫</div>
+                            <div class="char-desc"><b>身份：</b>卓尔精灵隐士 (Lv.75)<br><b>特质：</b>刚成年（非人类的成年标准）的卓尔精灵（暗精灵），基础寿命为700岁 - 1200岁。卓尔精灵是精灵族的分支，居住在暗影棘林，寿命极长，他们在 500 岁之前几乎不会出现任何外貌上的衰老。在卓尔社会，男性卓尔地位低下，因受够了卓尔社会的压迫而自我放逐至星辉林地隐居。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/77qwkl.jpg" alt="谌绪">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">谌绪</div>
+                            <div class="char-desc"><b>身份：</b>神殿圣子/神谕者 (Lv.65)<br><b>特质：</b>刚成年（非人类的成年标准）的半神民，人神混血，基础寿命在300岁 - 500岁，半神民的衰老速度极度缓慢，在漫长的岁月中能长期保持少年或青年的形态，可变身为背后拥有白色羽翼，头顶有光环的模样。圣罗兰城邦神殿的“圣子/神谕者”，虽名为神谕者，但由于老神官常年卧病，他实际上握有圣罗兰城邦最高精神解释权，能轻巧地利用“神之名”来推行自己的意图。最爱装生涩无辜来诱导你对他进行玷污。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/j78h09.JPG" alt="鹿言">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">鹿言</div>
+                            <div class="char-desc"><b>身份：</b>白鸦酒馆老板/半精灵诗人 (Lv.85)<br><b>特质：</b>精灵一族中极其罕见的半精灵血脉，结合了人类的爆发力和精灵的长寿。半精灵的衰老极其缓慢，基础寿命在500岁 - 850岁，通常在 500 岁之前都能保持壮年的外貌和充沛的体力。圣罗兰城邦中负有盛名的吟游诗人，“白鸦酒馆”的老板。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/veo5zr.JPG" alt="司洛">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">司洛</div>
+                            <div class="char-desc"><b>身份：</b>纯血魅魔/贵族花花公子 (Lv.99)<br><b>特质：</b>圣罗兰城邦中是花花公子的人类贵族身份，有一栋复古的宅邸，实则是内心隐秘渴望纯爱的纯血魅魔。额头上有优美弧度的犄角，类似于顶级黑缎与皮革的结合体的翅膀，以及身后有一条末端带有心形倒刺的细长尾巴。魅魔作为高阶恶魔种，属于长生种。只要能持续获得“能量”，他们的肉体就能永远保持在巅峰状态。等级越高，维持肉体巅峰所需的“能量”基础值就越高。作为一个聪明的魅魔，他发现 Lv.99 是“维持绝顶美貌”与“能量消耗”的最佳性价比区间。如果你能让他沉沦，在情事后会反哺生命能量给你。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/om4wiw.jpg" alt="秦述">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">秦述</div>
+                            <div class="char-desc"><b>身份：</b>骑士团长/银龙裔 (Lv.90)<br><b>特质：</b>银龙裔（混血半龙人），人和银龙的混血，银色的龙鳞平时隐藏在重型铠甲之下，但在战斗或极度激动时，局部（如脸颊、颈侧、手背）会浮现出晶莹剔透的银色鳞片。基础寿命为800岁 - 1500岁，全盛期在20-1000岁，银龙裔拥有极长的“冻龄期”。在城邦“最想嫁的男性”人气榜中常年第一。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/lsir0t.JPG" alt="周锦宁">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">周锦宁</div>
+                            <div class="char-desc"><b>身份：</b>猫人族王子 (Lv.70)<br><b>特质：</b>猫人族，20岁，基础寿命120岁 - 150岁。隔壁森林“翡翠秘径”领地的王子，在圣罗兰城邦中也有一座豪华的宅邸，到哪都有伺候的人。由于血统原因即使人类形态也无法隐藏猫耳与长尾，本体是一只高雅的纯黑波斯猫（正常大小）。拥有超越常人的平衡感与夜视能力，猫人族的动态视力极佳，能捕捉到魔物最细微的破绽。猫人族的耳朵和尾巴是心情的晴雨表。即便嘴上再怎么毒舌，如果尾巴高高地竖起或者耳朵尖抖动，就说明他现在心情好极了。</div>
+                        </div>
+                    </div>
+
+                    <div class="char-slide">
+                        <div class="char-img-area" onclick="openLightbox(this)">
+                            <img src="https://files.catbox.moe/38fojh.JPG" alt="魏星泽">
+                        </div>
+                        <div class="char-info-area">
+                            <div class="char-name">魏星泽</div>
+                            <div class="char-desc"><b>身份：</b>新晋冒险者/城主亲弟弟 (Lv.70)<br><b>特质：</b>人类，20岁，圣罗兰城主魏月华的亲弟弟，在城里有相当的名气，现任新晋冒险者。永远直球的小太阳金毛犬。充满活力与冲劲，偶尔显露狡黠，但大多时候非常单纯。魏星泽的战斗风格兼具物理爆发与属性附魔，实力在人类里非常出色，拥有极高的剑术与魔法天赋，只是因哥哥的严厉管教（担心他出事）直到20岁才正式出城冒险。</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="carousel-dots" id="dots-container"></div>
+            </div>
+        </div>
+
+        <div id="tab-create" class="tab-content">
+            <div class="section-box">
+                <form class="sys-form" id="creation-form">
+                    <div class="form-group full">
+                        <label>本名 (将作为降临者的真名)</label>
+                        <input type="text" id="p-name" placeholder="输入名字..." required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>穿越方式</label>
+                        <select id="p-method" required>
+                            <option value="">[请选择传送协议]</option>
+                            <option value="疲劳过度直接猝死（泥头车没来版）">疲劳过度猝死</option>
+                            <option value="保护他人被泥头车撞击（标准版）">经典泥头车撞击</option>
+                            <option value="通宵打RPG游戏突然眼前一黑（网瘾版）">通宵打RPG穿越</option>
+                            <option value="回家路上踩空掉进无底下水道（物理版）">掉进神秘下水道</option>
+                            <option value="收到了一封未知邮件点击了同意（契约版）">点击不明弹窗同意转生</option>
+                            <option value="不知怎么回事醒来就在这里了（莫名其妙版）">一觉睡醒神秘降临</option>
+                            <option value="自定义（已写在角色卡里）">【自定义】已写在角色卡里</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>转生状态</label>
+                        <select id="p-status">
+                            <option value="原原本本的身穿">保持原样身穿</option>
+                            <option value="变成了别人样子的魂穿">借尸还魂（魂穿）</option>
+                            <option value="自定义（已写在角色卡里）">【自定义】已写在角色卡里</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>魂穿后/变异后的种族</label>
+                        <select id="p-race">
+                            <option value="毫无亮点的人类">人类 (均衡无波澜)</option>
+                            <option value="耳朵尖尖的精灵">精灵 (极高亲和力与法力)</option>
+                            <option value="拥有绒耳的毛茸茸兽娘/兽人">半兽人 (力量与敏捷拉满)</option>
+                            <option value="散发异香的魅魔">变异魅魔分支 (极易吸引注意)</option>
+                            <option value="半神混血">半神裔 (潜力恐怖寿命极长)</option>
+                            <option value="史莱姆变种">半水生类变种 (身体极度柔软)</option>
+                            <option value="背长黑翼的魔族">魔族 (天生暗黑魔法加持)</option>
+                            <option value="翅膀和光顶环均为白色的天使">天使(与神明最亲近的存在)</option>
+                            <option value="翅膀和头顶光环均为黑色的堕天使">堕天使(和天使完全相反的存在)</option>
+                            <option value="随机（基于世界观在[大众化种族、远古幻想生物、自然元素灵体、被遗忘的异型异种]这四种中按比例随机抽取，严禁偏向特定类别，并详细描述特征、样貌、年龄与寿命。）">随机（穿到哪个是哪个）</option>
+                            <option value="自定义（已写在角色卡里）">【自定义】已写在角色卡里</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>原世界身份 (选填，仅记录系统日志)</label>
+                        <input type="text" id="p-origin" placeholder="如：苦逼社畜、家里蹲大学生...">
+                    </div>
+
+                    <div class="form-group full">
+                        <label>初始属性偏好系统指派</label>
+                        <select id="p-class" required>
+                            <option value="">[分析转生者灵体潜能...]</option>
+                            <option value="魔法系（偏智力，能毁天灭地但皮脆，生成一个流派相关初始技能）">【魔法流】毁天灭地大元素使 (主加智力INT)</option>
+                            <option value="物理近战（偏体质和攻击，抡起大剑就是砸，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备服装）">【战士流】大剑猛士破甲狂人 (主加攻击ATK&体质CON)</option>
+                            <option value="刺客暗杀（偏敏捷，天下武功唯快不破，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备服装）">【刺客流】暗影步神隐之王 (主加敏捷AGI)</option>
+                            <option value="辅助治疗（偏体制和智力，在队伍后面吃瓜，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备服装）">【奶妈流】圣光牧师无敌壁垒 (主加智力INT&体质CON)</option>
+                            <option value="废柴幸运流（因为四体不勤，系统只好给点满了幸运防死，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备）">【逆天流】十里坡战神转世幸运儿 (疯狂溢出幸运LUK)</option>
+                            <option value="随机流（系统自动匹配数值确认流派，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备服装）">【随机流】流派是什么，阿巴阿巴</option>
+                            <option value="自定义（已写在角色卡里，生成一个流派相关初始技能，附赠一把流派专属武器和初始装备服装））">【自定义】已写在角色卡里</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full">
+                        <label>因空间乱流导致落地坐标偏差：请选择</label>
+                        <select id="p-spawn" required>
+                            <option value="">[计算着陆坐标点...]</option>
+                            <option value="王道开局：王宫大殿中央的召唤法阵，勇者标配待遇，直接和圣子与城主对接">【王道】圣城王宫召唤阵 (勇者尊贵待遇开局)</option>
+                            <option value="种田开局：某片祥和安宁但远离城区的无名原始山林中，风景绝美">【躺平】不知名的偏远林地 (隐居悠闲开局)</option>
+                            <option value="硬核开局：暗影棘林或更高危险的魔物巢穴中心，随时可能丧命">【硬核】高危魔物森林中心 (极限求生开局)</option>
+                            <option value="地狱开局：浑身湿透、被铁链锁在地牢最深处或者正在被拿去当祭品的暗黑森林">【地狱】暗无天日的底下监牢/暗黑森林献祭台 (绝境逆袭开局)</option>
+                            <option value="【强制随机开局】请在 1-10 之间随机抽取一个数字，对应 10 位男主。禁止选择默认选项。根据抽取的数字，从世界书中提取对应男主的身份、性格与当前所在位置。随机生成一个符合该男主生活轨迹、且适合 {{user}} 降落的坐标（如：神殿后花园、林地木屋旁、骑士团训练场等）。请直接描述 {{user}} 穿越落地的一瞬间，以及第一眼看到的那个男主。现在，请掷骰子并开始你的叙述。">【随机】命运投掷（随机男主）</option>
+                            <option value="自定义（已写在角色卡里）">【自定义】已写在角色卡里</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full">
+                        <p style="color: var(--accent-red); font-size: 1.1em; text-align: center; margin-bottom: 8px;">
+                            ⚠️ 注意：随机流派或随机种族将触发系统自动分配，请将roll出来的姓名、种族、流派/职业手动记录到角色卡中。（如有特殊要求性别、性格等。建议提前写在角色卡里）
+                        </p>
+                        <button type="submit" class="submit-btn">【确认生成命运档案，接入塞莱斯蒂亚网络】</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+        <span class="close-lightbox" id="close-lb">&times;</span>
+        <img id="lb-img" src="" alt="预览">
+    </div>
+
+    <script>
+        document.addEventListener('click', function(e) {
+            if(e.target.closest('.icon-btn') || e.target.closest('.tab-btn') || e.target.closest('.nav-btn')) return;
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            const size = 50;
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${e.clientX - size/2}px`;
+            ripple.style.top = `${e.clientY - size/2}px`;
+            document.body.appendChild(ripple);
+            setTimeout(() => { ripple.remove(); }, 600);
+        });
+
+        const particleContainer = document.getElementById('particles');
+        for (let i = 0; i < 20; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            const size = Math.random() * 8 + 4;
+            p.style.width = `${size}px`;
+            p.style.height = `${size}px`;
+            p.style.left = `${Math.random() * 100}vw`;
+            p.style.animationDuration = `${Math.random() * 10 + 10}s`;
+            p.style.animationDelay = `${Math.random() * 5}s`;
+            particleContainer.appendChild(p);
+        }
+
+        const bgm = document.getElementById('bgm');
+        const musicBtn = document.getElementById('music-btn');
+        let isPlaying = false;
+
+        window.addEventListener('load', () => {
+            bgm.volume = 0.5;
+            console.log("BGM 已就绪，点击播放按钮开始播放");
+        }, {once:true});
+
+        musicBtn.addEventListener('click', () => {
+            if (isPlaying) {
+                bgm.pause();
+                musicBtn.style.color = 'var(--text-color)';
+                musicBtn.style.background = 'transparent';
+                musicBtn.innerText = '♪';
+            } else {
+                bgm.play();
+                musicBtn.style.color = '#fff';
+                musicBtn.style.background = 'var(--accent-gold)';
+                musicBtn.innerText = '♫';
+            }
+            isPlaying = !isPlaying;
+        });
+
+        const themeBtn = document.getElementById('theme-btn');
+        themeBtn.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            if (currentTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'light');
+                themeBtn.innerText = '☾';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeBtn.innerText = '☼';
+            }
+        });
+
+        const tabs = document.querySelectorAll('.tab-btn');
+        const contents = document.querySelectorAll('.tab-content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                tab.classList.add('active');
+                document.getElementById(tab.getAttribute('data-target')).classList.add('active');
+            });
+        });
+
+        const lightbox = document.getElementById('lightbox');
+        const lbImg = document.getElementById('lb-img');
+        const closeLb = document.getElementById('close-lb');
+
+        function openLightbox(element) {
+            const imgSrc = element.querySelector('img').src;
+            lbImg.src = imgSrc;
+            lightbox.classList.add('active');
+        }
+
+        closeLb.addEventListener('click', () => lightbox.classList.remove('active'));
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) lightbox.classList.remove('active');
+        });
+
+        const track = document.getElementById('char-track');
+        const slides = document.querySelectorAll('.char-slide');
+        const nextBtn = document.getElementById('btn-next');
+        const prevBtn = document.getElementById('btn-prev');
+        const dotsContainer = document.getElementById('dots-container');
+
+        let currentIndex = 0;
+        const totalSlides = slides.length;
+
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = `dot ${i === 0 ? 'active' : ''}`;
+            dot.dataset.index = i;
+            dot.addEventListener('click', () => goToSlide(i));
+            dotsContainer.appendChild(dot);
+        }
+        const dots = document.querySelectorAll('.dot');
+
+        function updateCarousel() {
+            track.style.transform = `translateX(-${currentIndex * 100}%)`;
+            dots.forEach(d => d.classList.remove('active'));
+            dots[currentIndex].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentIndex = (currentIndex + 1) % totalSlides;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+            updateCarousel();
+        }
+
+        nextBtn.addEventListener('click', nextSlide);
+        prevBtn.addEventListener('click', prevSlide);
+
+        function goToSlide(index) {
+            currentIndex = index;
+            updateCarousel();
+        }
+
+        let autoPlay = setInterval(nextSlide, 5000);
+        document.querySelector('.carousel-container').addEventListener('mouseenter', () => clearInterval(autoPlay));
+        document.querySelector('.carousel-container').addEventListener('mouseleave', () => autoPlay = setInterval(nextSlide, 5000));
+
+        const form = document.getElementById('creation-form');
+
+        function escapeSpecialChars(str) {
+            if (typeof str !== 'string') return str;
+            return str.replace(/[|"]/g, '\\$&');
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const profile = {
+                name: document.getElementById('p-name').value,
+                method: document.getElementById('p-method').value,
+                status: document.getElementById('p-status').value,
+                race: document.getElementById('p-race').value,
+                origin: document.getElementById('p-origin').value || "无名之辈",
+                classPref: document.getElementById('p-class').value,
+                spawn: document.getElementById('p-spawn').value
+            };
+
+            const jsonString = JSON.stringify(profile, null, 2);
+
+            const WI_FILENAME = "YOUR_WI_FILENAME";
+            const WI_UID = "YOUR_WI_UID";
+
+            const isRandomClass = profile.classPref.includes("随机");
+            const classInstruction = isRandomClass
+                ? "由于您选择了【随机流】，系统将为您随机生成一套合理的初始属性、技能和武器（请确保平衡）。"
+                : `您选择了【${profile.classPref}】，系统将基于此流派分配初始属性、技能和武器。`;
+
+            const introMsg = `*强烈的眩晕感袭来。一阵奇异的机械音在脑海中炸开：*
+【警告！检测到宿主完成降临设定！】
+【锁定宿主：${profile.name}】
+【穿越途径判定：${profile.method}。】
+【转生状态：${profile.status}】
+【种族：${profile.race}】
+${profile.origin ? `【原世界身份：${profile.origin}】` : ""}
+【属性偏好：${profile.classPref}】
+【落地坐标：${profile.spawn}】
+${classInstruction}
+
+**请按照以下步骤进行回复：**
+
+1. 首先，根据上述降临设定，生成一份完整的【角色身份档案】，格式如下（请用 markdown 列表或 JSON 均可，但需包含以下信息）：
+   - 姓名：${profile.name}
+   - 种族：${profile.race}
+   - 流派/职业：根据属性偏好确定（若随机则随机生成一个合理流派）
+   - 初始属性（攻击、防御、体质、智力、敏捷、幸运）：根据流派生成具体数值（合计总值30点）
+
+2. 档案生成后，另起一段，开始描写降临瞬间的周围环境、遇到的第一个角色（根据落地坐标选择），并自然引出后续剧情。
+
+（系统提示：请确保档案内容与后续剧情连贯，不要出现矛盾。）`;
+
+            const commandList = `/setentryfield file="${WI_FILENAME}" uid=${WI_UID} field=content ${escapeSpecialChars(jsonString)} | /echo severity=success 【系统消息】：身份契约已锚定。异界通道即将敞开。祝您在塞莱斯蒂亚的大逃杀——哦不，退休之旅中愉快！ | /send ${introMsg} | /trigger`;
+
+            if (typeof triggerSlash === 'function') {
+                const btn = document.querySelector('.submit-btn');
+                btn.innerText = "🌀 次元跳跃中...";
+                btn.style.pointerEvents = "none";
+                triggerSlash(commandList);
+            } else {
+                alert("未检测到ST酒馆助手的触发环境。您可以将下面这串文本作为剧情开头手动发送：\n\n" + introMsg);
+            }
+        });
+    </script>
+</body>
+</html>

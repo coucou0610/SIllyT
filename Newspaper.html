@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>异闻报纸 · 冒险者公会特刊</title>
+    <style>
+        @import url("https://fontsapi.zeoseven.com/995/main/result.css");
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #2a2418;
+            background-image:
+                radial-gradient(circle at 25% 40%, rgba(80, 60, 40, 0.6) 2%, transparent 2.5%),
+                radial-gradient(circle at 70% 85%, rgba(60, 45, 30, 0.5) 1.8%, transparent 2%);
+            background-size: 40px 40px, 32px 32px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            margin: 0;
+            font-family: "Z Labs RoundPix 12px M CN", "Courier New", monospace;
+        }
+
+        .newspaper-container {
+            font-family: "Z Labs RoundPix 12px M CN", "Courier New", monospace;
+            font-weight: normal;
+            background-color: #ecd9b4;
+            background-image:
+                linear-gradient(to right, transparent 49.8%, rgba(90, 60, 30, 0.10) 49.9%, rgba(90, 60, 30, 0.10) 50.1%, transparent 50.2%),
+                repeating-linear-gradient(45deg, rgba(160, 120, 70, 0.08) 0px, rgba(160, 120, 70, 0.08) 2px, transparent 2px, transparent 8px),
+                linear-gradient(rgba(100, 60, 20, 0.08) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(100, 60, 20, 0.08) 1px, transparent 1px);
+            background-size: 100% 100%, 12px 12px, 16px 16px, 16px 16px;
+            color: #2c2418;
+            width: 100%;
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 28px 24px 32px 24px;
+            border: 2px solid #6b4c2c;
+            border-radius: 12px 4px 20px 4px;
+            box-shadow:
+                12px 12px 0 rgba(0, 0, 0, 0.35),
+                inset 0 0 40px rgba(80, 45, 10, 0.15),
+                inset 0 0 3px #f7e9ce;
+            position: relative;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .newspaper-container::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 56px;
+            height: 56px;
+            background-image:
+                radial-gradient(circle, #8b5a2b 1px, transparent 1px),
+                radial-gradient(circle, #b87c3a 1px, transparent 1px);
+            background-size: 8px 8px, 12px 12px;
+            border-left: 2px solid #a56b2f;
+            border-top: 2px solid #a56b2f;
+            box-shadow: -2px -2px 0 rgba(0,0,0,0.1);
+            transform: rotate(-3deg);
+            opacity: 0.65;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .newspaper-container::after {
+            content: "";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 64px;
+            height: 64px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238b5a2b" opacity="0.5"><path d="M22 2L15 9 17 11 22 2zM9 13L2 20 4 22 11 15 9 13zM12 8L16 4 14 2 8 8 10 10 12 8z"/></svg>') no-repeat center;
+            background-size: contain;
+            filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.2));
+            opacity: 0.7;
+            pointer-events: none;
+            animation: subtleGlow 4s infinite alternate;
+        }
+
+        @keyframes subtleGlow {
+            0% { opacity: 0.45; filter: drop-shadow(0 0 0px rgba(210, 150, 70, 0)); }
+            100% { opacity: 0.75; filter: drop-shadow(0 0 3px rgba(210, 150, 70, 0.45)); }
+        }
+
+        .paper-seal {
+            position: absolute;
+            top: 18px;
+            right: 18px;
+            font-size: 0.68rem;
+            color: #8b5a2b;
+            border: 1px solid rgba(139,90,43,0.35);
+            background: rgba(255,245,220,0.35);
+            padding: 4px 8px;
+            letter-spacing: 1px;
+            transform: rotate(2deg);
+            z-index: 2;
+        }
+
+        .newspaper-header {
+            text-align: center;
+            border-bottom: 4px double #836e4a;
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .newspaper-header::after {
+            content: "✧ 冒险者公会认证 ✧";
+            position: absolute;
+            bottom: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ecd9b4;
+            padding: 0 12px;
+            font-size: 0.7rem;
+            letter-spacing: 1px;
+            color: #8b5a2b;
+            font-weight: bold;
+            white-space: nowrap;
+            font-family: monospace;
+            text-shadow: 1px 1px 0 #f1e2ca;
+        }
+
+        .newspaper-title {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+            margin: 0;
+            text-align: center;
+        }
+
+        .main-title {
+            font-size: 3rem;
+            font-weight: bold;
+            letter-spacing: 3px;
+            color: #2f241b;
+            text-shadow: 3px 3px 0px #c9aa7b;
+            line-height: 1.1;
+        }
+
+        .main-title::before {
+            content: "⚔️ ";
+            font-size: 2rem;
+        }
+
+        .main-title::after {
+            content: " 🛡️";
+            font-size: 2rem;
+        }
+
+        .sub-title {
+            font-size: 0.95rem;
+            letter-spacing: 2px;
+            color: #8b5a2b;
+            font-weight: bold;
+            border-top: 2px solid rgba(139,90,43,0.35);
+            padding-top: 6px;
+        }
+        .date-line {
+            font-size: 0.85rem;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 14px;
+            border-top: 2px solid #836e4a;
+            border-bottom: 2px solid #836e4a;
+            padding: 6px 8px;
+            background: rgba(110, 70, 35, 0.1);
+            font-weight: bold;
+            color: #3b2c1e;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .main-quest-section {
+            background: linear-gradient(145deg, rgba(100, 50, 25, 0.1), rgba(180, 120, 70, 0.08));
+            border: 3px ridge #ab6f3a;
+            border-image: repeating-linear-gradient(45deg, #b87c3a, #6e3e1a, #b87c3a) 30;
+            padding: 18px 16px;
+            margin-bottom: 24px;
+            position: relative;
+            transition: transform 0.2s ease, box-shadow 0.2s;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.2), inset 0 1px 0px rgba(255,245,210,0.8);
+            z-index: 2;
+        }
+
+        .main-quest-section:hover {
+            transform: scale(1.01);
+            box-shadow: 0 8px 18px rgba(100, 40, 0, 0.4);
+            border-color: #d6934a;
+        }
+
+        .main-quest-title {
+            color: #942c1c;
+            font-size: 1.7rem;
+            margin-top: -6px;
+            margin-bottom: 12px;
+            text-align: center;
+            font-weight: bold;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 0px rgba(200, 120, 60, 0.3);
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="%23942c1c"><polygon points="12,2 15,9 22,9 16,14 19,22 12,17 5,22 8,14 2,9 9,9 12,2"/></svg>') no-repeat left center;
+            background-size: 26px;
+            padding-left: 34px;
+            background-position: 0 50%;
+        }
+
+        .main-quest-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: rgba(0,0,0,0.05);
+            display: inline-block;
+            padding: 0 4px;
+            margin-bottom: 6px;
+            word-break: break-word;
+        }
+
+        .main-quest-desc {
+            margin-bottom: 10px;
+            line-height: 1.55;
+            word-break: break-word;
+        }
+
+        .main-quest-reward {
+            background: #f0ddbc;
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            color: #862d16;
+            margin-bottom: 10px;
+            font-size: 0.9em;
+            word-break: break-word;
+        }
+
+        .investigate-btn {
+            display: block;
+            width: 100%;
+            background-color: #4f3f2e;
+            color: #fef0dd;
+            border: 2px solid #2b2118;
+            padding: 8px 6px;
+            margin-top: 14px;
+            font-family: inherit;
+            cursor: pointer;
+            font-weight: bold;
+            text-align: center;
+            transition: all 0.08s linear;
+            box-shadow: 2px 2px 0px #1f180f;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-radius: 20px 2px 20px 2px;
+        }
+
+        .investigate-btn:hover {
+            background-color: #6d5340;
+            transform: translate(-1px, -1px);
+            box-shadow: 3px 3px 0px #1f180f;
+        }
+
+        .investigate-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0px #1f180f;
+        }
+
+        .main-btn {
+            background: linear-gradient(135deg, #862d16, #5c2412);
+            border: 2px solid #e2a668;
+            font-size: 1rem;
+            text-shadow: 1px 1px 0 #3c180b;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 22px;
+            margin-bottom: 24px;
+            border-bottom: 3px double #b48a5a;
+            padding-bottom: 22px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            color: #8b5a2b;
+            border: 1px solid rgba(139,90,43,0.35);
+            background: rgba(255,245,220,0.35);
+            padding: 3px 8px;
+            margin-bottom: 8px;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 18px;
+        }
+
+        .news-item {
+            padding: 12px 12px 16px;
+            background: rgba(245, 230, 200, 0.5);
+            border: 1px solid #c7a26b;
+            border-radius: 12px 2px 12px 2px;
+            transition: all 0.2s;
+            box-shadow: inset 0 0 0 1px #fef0da, 3px 3px 6px rgba(0,0,0,0.1);
+        }
+
+        .news-item:hover {
+            background: #f6e8d4;
+            border-left: 6px solid #a55d2a;
+            transform: translateX(2px);
+        }
+
+        .news-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-left: 4px solid #b6622e;
+            padding-left: 8px;
+            color: #3a2a1c;
+            letter-spacing: 1px;
+            word-break: break-word;
+        }
+
+        .news-item:nth-child(1) .news-title::after {
+            content: " [卷·壹]";
+            font-size: 0.7rem;
+            font-weight: normal;
+            color: #a7572a;
+            margin-left: 6px;
+        }
+
+        .news-item:nth-child(2) .news-title::after {
+            content: " [卷·贰]";
+            font-size: 0.7rem;
+            font-weight: normal;
+            color: #a7572a;
+            margin-left: 6px;
+        }
+
+        .news-body {
+            line-height: 1.55;
+            word-break: break-word;
+        }
+
+        .side-note-box {
+            background: rgba(110, 70, 35, 0.08);
+            border: 1px dashed #a56b2f;
+            padding: 12px 12px 14px;
+            border-radius: 14px 2px 14px 2px;
+            box-shadow: inset 0 0 0 1px rgba(255,240,210,0.45);
+        }
+
+        .side-note-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #6b3c1e;
+            margin-bottom: 8px;
+        }
+
+        .side-note-body {
+            line-height: 1.55;
+            font-style: italic;
+            color: #4b3728;
+            word-break: break-word;
+        }
+
+        .ads-box {
+            background: #ead5af;
+            padding: 14px 14px 12px;
+            border: 1px solid #b98f62;
+            border-radius: 20px 0px 20px 0px;
+            box-shadow: inset 0 0 0 2px #fcf2df, 4px 4px 8px rgba(0,0,0,0.08);
+        }
+
+        .ads-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            margin-bottom: 12px;
+            color: #5e3a22;
+            border-bottom: 2px dotted #b4753a;
+            letter-spacing: 2px;
+        }
+
+        .ad-item {
+            margin-bottom: 10px;
+            background: rgba(255,255,255,0.18);
+            padding: 8px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(139,90,43,0.12);
+        }
+
+        .ad-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .ad-title {
+            font-weight: bold;
+            color: #7a431d;
+            margin-bottom: 4px;
+            word-break: break-word;
+        }
+
+        .ad-body {
+            font-size: 0.92rem;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .rumor-section {
+            background: #e4cfad;
+            background-image: radial-gradient(circle at 10% 20%, rgba(80, 50, 20, 0.05) 2%, transparent 2.5%);
+            background-size: 20px 20px;
+            padding: 16px 20px;
+            border-radius: 20px 0px 20px 0px;
+            border: 1px solid #b98f62;
+            box-shadow: inset 0 0 0 2px #fcf2df, 4px 4px 8px rgba(0,0,0,0.1);
+            margin-top: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .rumor-header {
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-bottom: 14px;
+            color: #5e3a22;
+            border-bottom: 2px dotted #b4753a;
+            display: inline-block;
+            width: 100%;
+            letter-spacing: 2px;
+        }
+
+        .rumor-header::before {
+            content: "🔮 ";
+        }
+
+        .rumor-header::after {
+            content: " 🔮";
+        }
+
+        .rumor-item {
+            margin-bottom: 12px;
+            font-style: italic;
+            background: rgba(0,0,0,0.03);
+            padding: 6px 10px;
+            border-radius: 12px;
+            transition: all 0.1s;
+            font-weight: 500;
+            line-height: 1.55;
+        }
+
+        .rumor-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .rumor-item::before {
+            content: "💬 ";
+            font-style: normal;
+            font-weight: bold;
+            color: #7a431d;
+        }
+
+        .rumor-name {
+            font-weight: bold;
+            color: #5a341d;
+        }
+
+        @media (max-width: 640px) {
+            .newspaper-container {
+                padding: 20px 16px 24px 16px;
+            }
+
+            .newspaper-title {
+                font-size: 2.2rem;
+            }
+
+            .newspaper-title::before,
+            .newspaper-title::after {
+                font-size: 1.8rem;
+            }
+
+            .main-quest-title {
+                font-size: 1.3rem;
+                background-size: 20px;
+                padding-left: 26px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .news-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .date-line {
+                font-size: 0.74rem;
+            }
+
+            .rumor-item {
+                font-size: 0.85rem;
+            }
+
+            .paper-seal {
+                position: static;
+                display: inline-block;
+                margin-bottom: 10px;
+                transform: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="newspaper-container">
+        <div class="paper-seal">GUILD PRESS</div>
+
+<div class="newspaper-header">
+            <h1 class="newspaper-title">
+                <span class="main-title">$1</span>
+                <span class="sub-title">冒险者公会特刊</span>
+            </h1>
+            <div class="date-line">
+                <span>卷号: ???</span>
+                <span>发行: 冒险者公会</span>
+                <span>价格: 1 铜币</span>
+            </div>
+        </div>
+
+        <div class="main-quest-section">
+            <h2 class="main-quest-title">★ 头版头条 ★</h2>
+            <div class="main-quest-name">$2</div>
+            <div class="main-quest-desc">$3</div>
+            <div class="main-quest-reward">悬赏: $4</div>
+            <button class="investigate-btn main-btn" onclick="startMainQuest(this)" data-quest-name="$2">🔍 深入调查 (危险)</button>
+        </div>
+
+        <div class="content-grid">
+            <div class="left-column">
+                <div class="section-tag">WORLD REPORT</div>
+                <div class="news-grid">
+                    <div class="news-item">
+                        <div class="news-title">$5</div>
+                        <div class="news-body">$6</div>
+                        <button class="investigate-btn" onclick="investigateNews(this)" data-news-title="$5">调查此事</button>
+                    </div>
+                    <div class="news-item">
+                        <div class="news-title">$7</div>
+                        <div class="news-body">$8</div>
+                        <button class="investigate-btn" onclick="investigateNews(this)" data-news-title="$7">调查此事</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="side-note-box">
+                    <div class="section-tag">EDITOR NOTE</div>
+                    <div class="side-note-title">编者短评</div>
+                    <div class="side-note-body">$9</div>
+                </div>
+
+                <div class="ads-box">
+                    <div class="ads-header">- 市井小广告 -</div>
+                    <div class="ad-item">
+                        <div class="ad-title">$10</div>
+                        <div class="ad-body">$11</div>
+                    </div>
+                    <div class="ad-item">
+                        <div class="ad-title">$12</div>
+                        <div class="ad-body">$13</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rumor-section">
+            <div class="rumor-header">- 街头巷尾 -</div>
+            <div class="rumor-item"><span class="rumor-name">$14</span>: $15</div>
+            <div class="rumor-item"><span class="rumor-name">$16</span>: $17</div>
+        </div>
+    </div>
+
+    <script>
+        function startMainQuest(btn) {
+            btn.innerText = "准备中...";
+            const questName = btn.getAttribute('data-quest-name');
+
+            const prompt = `[系统] 玩家决定对报纸上的头条【${questName}】进行深入调查。这似乎是一个长期且神秘的主线任务。请生成一段剧情：描述主角阅读报纸后的反应，以及是否接取主线任务；若不接取，则不更新主线任务框）。`;
+
+            if (typeof triggerSlash === 'function') {
+                triggerSlash(`/send ${prompt} | /trigger`);
+            } else {
+                console.log("SillyTavern environment not found. Prompt:", prompt);
+            }
+
+            setTimeout(() => { btn.innerText = "🔍 深入调查 (危险)"; }, 1000);
+        }
+
+        function investigateNews(btn) {
+            const newsTitle = btn.getAttribute('data-news-title');
+            const prompt = `[系统] 玩家对报纸上的新闻“${newsTitle}”产生了兴趣，决定去附近打听一下相关情况。请生成一小段主角在周边收集情报的剧情。newspaper_ui内的 [MainQuest]仅作为“新闻信息流”存在，严禁更新 adventure_log 中的 [MainQuest] 字段。`;
+
+            if (typeof triggerSlash === 'function') {
+                triggerSlash(`/send ${prompt} | /trigger`);
+            } else {
+                console.log("SillyTavern environment not found. Prompt:", prompt);
+            }
+        }
+    </script>
+</body>
+</html>

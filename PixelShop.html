@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>破旧杂货铺 · 锈铁与咒语</title>
+    <style>
+        @import url("https://fontsapi.zeoseven.com/870/main/result.css");
+    </style>
+    <style>
+        * {
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        body {
+            background: #2d2418;
+            background-image:
+                radial-gradient(circle at 20% 30%, rgba(70, 50, 35, 0.6) 1px, transparent 1px),
+                radial-gradient(circle at 75% 60%, rgba(45, 35, 25, 0.5) 1.5px, transparent 1.5px);
+            background-size: 32px 32px, 48px 48px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px 16px;
+            margin: 0;
+        }
+
+        .pixel-shop-container {
+            font-family: "PoxiaoPixel", "Courier New", "Cinzel", "Georgia", monospace;
+            font-weight: normal;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto;
+            background: #c9ad7a;
+            background-image:
+                repeating-linear-gradient(45deg, rgba(80, 55, 35, 0.12) 0px, rgba(80, 55, 35, 0.12) 2px, transparent 2px, transparent 8px),
+                linear-gradient(115deg, #e2cba4 0%, #b38f5e 100%);
+            border: 8px double #3e2a1f;
+            border-radius: 32px 8px 32px 8px;
+            padding: 20px 22px 28px;
+            box-shadow:
+                0 12px 28px rgba(0,0,0,0.5),
+                inset 0 1px 4px rgba(255, 245, 200, 0.5),
+                inset 0 -2px 8px rgba(0,0,0,0.2);
+            position: relative;
+            transition: all 0.2s;
+            overflow: hidden;
+        }
+
+        .pixel-shop-container::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border: 1px solid rgba(60, 40, 25, 0.3);
+            border-radius: 24px 4px 24px 4px;
+            pointer-events: none;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        .pixel-shop-container::after {
+            content: "⚔️ 🧨 ⚗️";
+            position: absolute;
+            bottom: -12px;
+            right: 16px;
+            font-size: 12px;
+            color: #6e4f2c;
+            background: #2b2119;
+            padding: 2px 12px;
+            border-radius: 40px;
+            letter-spacing: 2px;
+            opacity: 0.6;
+            font-family: monospace;
+            white-space: pre;
+            box-shadow: inset 0 0 2px #a77b42, 0 1px 2px black;
+        }
+
+        .shop-header {
+            text-align: center;
+            border-bottom: 3px ridge #9c7a48;
+            padding-bottom: 14px;
+            margin-bottom: 18px;
+            position: relative;
+            background: rgba(0,0,0,0.1);
+            border-radius: 40px 40px 0 0;
+        }
+
+        .shop-header::before {
+            content: "⛓️";
+            position: absolute;
+            left: 8px;
+            top: 8px;
+            font-size: 18px;
+            color: #7a5a3a;
+            opacity: 0.8;
+            text-shadow: 0 1px 0 #4a2e1a;
+        }
+
+        .shop-header::after {
+            content: "⛓️";
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            font-size: 18px;
+            color: #7a5a3a;
+            opacity: 0.8;
+        }
+
+        .shop-title {
+            font-size: 30px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0 0 8px 0;
+            color: #eedbae;
+            text-shadow: 2px 2px 0 #3a2a1b;
+            display: inline-block;
+            padding: 0 12px;
+            letter-spacing: 4px;
+        }
+
+        .shop-subtitle {
+            display: block;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #f3ddb3;
+            opacity: 0.8;
+            margin-top: -2px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-msg {
+            font-size: 15px;
+            font-style: italic;
+            background: #2a221ad9;
+            padding: 8px 14px;
+            border-radius: 60px;
+            border: 1px solid #d6aa6e;
+            color: #fcf0d5;
+            backdrop-filter: blur(1px);
+            box-shadow: inset 0 1px 2px rgba(255, 235, 190, 0.6), 0 2px 4px rgba(0,0,0,0.3);
+            display: inline-block;
+            width: auto;
+            margin-top: 6px;
+            max-width: 88%;
+            line-height: 1.45;
+        }
+
+        @keyframes candleFlicker {
+            0% { opacity: 0.6; text-shadow: 0 0 1px #ffb347; }
+            100% { opacity: 1; text-shadow: 0 0 3px #ff9f2e; }
+        }
+
+        .welcome-msg::before {
+            content: "🕯️";
+            margin-right: 6px;
+            display: inline-block;
+            animation: candleFlicker 1.2s infinite alternate;
+        }
+
+        .welcome-msg::after {
+            content: "🕯️";
+            margin-left: 6px;
+            display: inline-block;
+            animation: candleFlicker 1.5s infinite alternate-reverse;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #34281dd9;
+            border: 2px solid #ab8b58;
+            border-radius: 48px;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            backdrop-filter: blur(3px);
+            box-shadow: inset 0 0 0 1px #ffefc0, 0 4px 8px rgba(0,0,0,0.3);
+            color: #f7e9cf;
+            gap: 12px;
+        }
+
+        .gold-wrap {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        .gold-amount {
+            font-weight: bold;
+            color: #f5bc70;
+            text-shadow: 0 0 2px #d68b2c, 1px 1px 0 #4b2a0e;
+            font-size: 1.2rem;
+            background: #221a12;
+            padding: 2px 10px;
+            border-radius: 32px;
+            margin-left: 6px;
+            border: 1px solid #cf9f58;
+            box-shadow: inset 0 1px 1px #ffdd99, 0 1px 0 #1f150c;
+        }
+
+        .action-btn {
+            font-family: "PoxiaoPixel", "Courier New", monospace;
+            background: #4f3927;
+            color: #f7e6cf;
+            border: 2px solid #2f2118;
+            border-radius: 24px;
+            padding: 6px 16px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: bold;
+            box-shadow: 3px 3px 0 #2a1e14;
+            transition: all 0.08s linear;
+            letter-spacing: 1px;
+        }
+
+        .action-btn:active {
+            box-shadow: 1px 1px 0 #2a1e14;
+            transform: translate(2px, 2px);
+        }
+
+        .action-btn:disabled {
+            background: #5e4c3a;
+            color: #9c8979;
+            box-shadow: 1px 1px 0 #2a1e14;
+            transform: none;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+        .shop-side-note {
+            margin: 0 auto 18px auto;
+            width: 88%;
+            max-width: 420px;
+            background: rgba(38, 28, 20, 0.78);
+            border: 1px dashed #c59b63;
+            border-radius: 18px 6px 18px 6px;
+            padding: 10px 14px;
+            color: #f4e4c4;
+            text-align: center;
+            box-shadow: inset 0 0 0 1px rgba(255, 225, 170, 0.08), 0 3px 6px rgba(0,0,0,0.18);
+        }
+
+        .shop-side-note::before {
+            content: "店主告示";
+            display: block;
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: #d8b07a;
+            margin-bottom: 6px;
+        }
+
+        .shop-side-note-text {
+            font-size: 12px;
+            line-height: 1.55;
+            color: #f7ecd8;
+        }
+
+        .sell-area {
+            display: none;
+            background: #241e16e6;
+            border: 3px ridge #b58b54;
+            border-radius: 24px 8px 24px 8px;
+            padding: 14px;
+            margin-top: 12px;
+            margin-bottom: 18px;
+            backdrop-filter: blur(2px);
+            box-shadow: inset 0 0 0 2px #644c2e, 5px 5px 12px rgba(0,0,0,0.4);
+        }
+
+        .sell-area.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: bold;
+            background: #5d3f28;
+            color: #fbefcf;
+            padding: 4px 16px;
+            display: inline-block;
+            border-radius: 60px;
+            border: 1px solid #e4b477;
+            box-shadow: inset 0 0 2px #fadaa0, 2px 2px 0 #2a1b0f;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+        }
+
+        .item-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 24px 0;
+            background: #efdfbdd9;
+            border-radius: 24px;
+            border: 1px solid #bd976a;
+            overflow: hidden;
+            box-shadow: inset 0 0 0 2px #fef0cf, 0 6px 10px rgba(0,0,0,0.2);
+        }
+
+        .item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 14px;
+            border-bottom: 1px solid #cfb586;
+            background: rgba(250, 240, 215, 0.7);
+            transition: all 0.15s;
+            position: relative;
+        }
+
+        .item-row:last-child {
+            border-bottom: none;
+        }
+
+        .item-row:hover {
+            background: rgba(235, 210, 165, 0.9);
+            transform: translateX(3px);
+        }
+
+        .item-row::before {
+            content: "▸";
+            position: absolute;
+            left: 8px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(110, 75, 35, 0.55);
+            font-size: 10px;
+        }
+
+        .item-info {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            padding-left: 14px;
+            flex: 1;
+            min-width: 0;
+        }
+
+        .item-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #2f2419;
+            letter-spacing: 0.5px;
+            line-height: 1.35;
+            word-break: break-word;
+        }
+
+        .rarity-badge {
+            display: inline-block;
+            margin-right: 6px;
+            padding: 1px 6px;
+            border-radius: 12px;
+            background: #4f3927;
+            color: #f7e6cf;
+            font-size: 11px;
+            border: 1px solid #8e6a42;
+            vertical-align: middle;
+        }
+
+        .item-desc {
+            font-size: 11px;
+            color: #604e38;
+            font-style: italic;
+            line-height: 1.45;
+            word-break: break-word;
+        }
+
+        .item-actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding-left: 10px;
+            flex-shrink: 0;
+        }
+
+        .item-price {
+            font-weight: bold;
+            color: #c27d2e;
+            background: #2c241a;
+            padding: 3px 10px;
+            border-radius: 40px;
+            font-size: 14px;
+            border: 1px solid #cf9f58;
+            box-shadow: inset 0 1px 1px #ffdd99, 0 1px 0 #1f150c;
+            white-space: nowrap;
+        }
+
+        .sell-btn {
+            background: #4a6132;
+            box-shadow: 2px 2px 0 #2a3a1a;
+        }
+
+        .sell-btn:active {
+            transform: translate(2px, 2px);
+            box-shadow: 0px 0px 0 #2a3a1a;
+        }
+
+        .cart-area {
+            background: #241f17dd;
+            border: 3px ridge #a08156;
+            border-radius: 24px;
+            padding: 16px;
+            margin-top: 28px;
+            backdrop-filter: blur(3px);
+            box-shadow: inset 0 0 0 1px #e9ca95, 0 6px 12px black;
+            position: relative;
+        }
+
+        .cart-area::before {
+            content: "旧账本";
+            position: absolute;
+            top: -12px;
+            left: 18px;
+            background: #5d3f28;
+            color: #fbefcf;
+            border: 1px solid #e4b477;
+            border-radius: 14px 14px 4px 4px;
+            padding: 3px 10px;
+            font-size: 11px;
+            letter-spacing: 1px;
+            box-shadow: 2px 2px 0 #2a1b0f;
+        }
+
+        .cart-header {
+            font-weight: bold;
+            margin-bottom: 10px;
+            border-left: 6px solid #b57a3a;
+            padding-left: 12px;
+            color: #ffefcc;
+            text-shadow: 1px 1px 0 #32261c;
+            letter-spacing: 1px;
+            font-size: 1.1rem;
+            margin-top: 6px;
+        }
+
+        .cart-input {
+            width: calc(100% - 20px);
+            font-family: "PoxiaoPixel", "Courier New", monospace;
+            padding: 14px 12px;
+            margin-bottom: 14px;
+            border: 2px solid #6b4f2e;
+            background:
+                repeating-linear-gradient(
+                    to bottom,
+                    #faf0dd 0px,
+                    #faf0dd 24px,
+                    #f1e2c8 24px,
+                    #f1e2c8 25px
+                );
+            resize: vertical;
+            min-height: 100px;
+            font-size: 13px;
+            color: #35271b;
+            border-radius: 16px;
+            box-shadow: inset 0 0 0 2px #ffe3b7, 2px 2px 5px rgba(0,0,0,0.2);
+            line-height: 1.7;
+        }
+
+        .cart-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 14px;
+        }
+
+        .confirm-btn {
+            background: #a15e2a;
+            border-color: #d68f3a;
+            box-shadow: 2px 2px 0 #4e2b12;
+        }
+
+        .clear-btn {
+            background: #622c1c;
+            border-color: #aa5a3a;
+        }
+
+        .parsed-sell-list .item-row {
+            background: #2a1f16c9;
+            border-color: #7e623e;
+            margin-bottom: 6px;
+            border-radius: 16px;
+            padding: 8px 12px;
+        }
+
+        .parsed-sell-list .item-row::before {
+            color: rgba(240, 210, 165, 0.45);
+        }
+
+        .parsed-sell-list .item-name {
+            color: #fbe2b0;
+            text-shadow: none;
+        }
+
+        .parsed-sell-list .item-price {
+            background: #1e150f;
+            color: #ffbc6e;
+        }
+
+        .parsed-sell-list .action-btn.sell-btn:disabled {
+            background: #4f3e2c;
+            color: #8b755a;
+        }
+
+        @media (max-width: 550px) {
+            .pixel-shop-container {
+                padding: 16px;
+            }
+
+            .status-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .item-row {
+                flex-wrap: wrap;
+                gap: 10px;
+            }
+
+            .item-actions {
+                width: 100%;
+                justify-content: space-between;
+                padding-left: 14px;
+            }
+
+            .cart-input {
+                font-size: 12px;
+            }
+
+            .shop-title {
+                font-size: 22px;
+            }
+
+            .welcome-msg {
+                max-width: 100%;
+            }
+
+            .shop-side-note {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="pixel-shop-container">
+        <div class="shop-header">
+            <h1 class="shop-title">锈铁与咒语</h1>
+            <span class="shop-subtitle">BROKEN CURIO SHOP</span>
+            <div class="welcome-msg">"$1"</div>
+        </div>
+
+        <div class="status-bar">
+            <div class="gold-wrap">
+                <span>📦 持有金币:</span>
+                <span class="gold-amount">$2</span>
+            </div>
+            <div>
+                <button class="action-btn" onclick="toggleSellArea()">📂 打开背囊</button>
+            </div>
+        </div>
+
+        <div class="shop-side-note">
+            <div class="shop-side-note-text">本店不收来路不明的王室印鉴、会咬人的瓶子，以及仍在哭泣的诅咒物。</div>
+        </div>
+
+        <div id="sellArea" class="sell-area">
+            <div class="section-title">⚡ 半价回收 · 旧物换铜板</div>
+            <div class="parsed-sell-list" id="sellListContainer">
+                <div style="display:none;" id="rawSellData">$4</div>
+            </div>
+        </div>
+
+        <div class="section-title">🏺 今日陈旧珍品</div>
+        <ul class="item-list">
+            <li class="item-row">
+                <div class="item-info">
+                    <span class="item-name"><span class="rarity-badge">$5</span>$6</span>
+                    <span class="item-desc">$8</span>
+                </div>
+                <div class="item-actions">
+                    <span class="item-price">$7</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$6', '$7')">📜 挑选</button>
+                </div>
+            </li>
+            <li class="item-row">
+                <div class="item-info">
+                    <span class="item-name"><span class="rarity-badge">$9</span>$10</span>
+                    <span class="item-desc">$12</span>
+                </div>
+                <div class="item-actions">
+                    <span class="item-price">$11</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$10', '$11')">📜 挑选</button>
+                </div>
+            </li>
+            <li class="item-row">
+                <div class="item-info">
+                    <span class="item-name"><span class="rarity-badge">$13</span>$14</span>
+                    <span class="item-desc">$16</span>
+                </div>
+                <div class="item-actions">
+                    <span class="item-price">$15</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$14', '$15')">📜 挑选</button>
+                </div>
+            </li>
+            <li class="item-row">
+                <div class="item-info">
+                    <span class="item-name"><span class="rarity-badge">$17</span>$18</span>
+                    <span class="item-desc">$20</span>
+                </div>
+                <div class="item-actions">
+                    <span class="item-price">$19</span>
+                    <button class="action-btn" onclick="addToCart('购买', '$18', '$19')">📜 挑选</button>
+                </div>
+            </li>
+        </ul>
+
+        <div class="cart-area">
+            <div class="cart-header">📜 交易羊皮卷 · 待结清单</div>
+            <textarea id="cartInput" class="cart-input" placeholder="点击商品或背囊里的旧物，自动添加交易条目..."></textarea>
+            <div class="cart-actions">
+                <button class="action-btn clear-btn" onclick="clearCart()">🧹 清空条目</button>
+                <button class="action-btn confirm-btn" onclick="confirmTransaction()">💰 确认交易</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inventoryCounts = {};
+
+        function parseSellData() {
+            const rawData = document.getElementById('rawSellData').innerText;
+            const container = document.getElementById('sellListContainer');
+
+            if (!rawData || rawData.trim() === '' || rawData.includes('无|0|0G')) {
+                container.innerHTML = '<div style="text-align:center; padding:10px; color:#efdfb0;">📭 背包空空如也，没有可出售的物品。</div>';
+                return;
+            }
+
+            const items = rawData.split('|');
+            let html = '';
+
+            for (let i = 0; i < items.length; i += 3) {
+                if (items[i] && items[i+1] && items[i+2]) {
+                    const itemName = items[i].trim();
+                    const itemQty = parseInt(items[i+1].trim()) || 1;
+                    const itemPrice = items[i+2].trim();
+
+                    if(inventoryCounts[itemName] === undefined) {
+                        inventoryCounts[itemName] = itemQty;
+                    }
+
+                    const forbiddenWords = ['钥匙', '证明', '信件', '凭证', '任务'];
+                    const isForbidden = forbiddenWords.some(word => itemName.includes(word));
+
+                    if(!isForbidden) {
+                        html += `
+                            <div class="item-row">
+                                <span class="item-name">${itemName} x<span id="qty-${itemName}">${inventoryCounts[itemName]}</span></span>
+                                <div>
+                                    <span class="item-price">+${itemPrice}</span>
+                                    <button id="btn-${itemName}" class="action-btn sell-btn" onclick="addToCart('出售', '${itemName}', '${itemPrice}')">⚙️ 选择</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                }
+            }
+            container.innerHTML = html;
+            updateButtonsState();
+        }
+
+        function toggleSellArea() {
+            const sellArea = document.getElementById('sellArea');
+            sellArea.classList.toggle('active');
+            if (sellArea.classList.contains('active')) {
+                parseSellData();
+            }
+        }
+
+        function addToCart(actionType, itemName, itemPrice) {
+            const cartInput = document.getElementById('cartInput');
+            let currentText = cartInput.value;
+
+            if (actionType === '出售') {
+                if (inventoryCounts[itemName] > 0) {
+                    inventoryCounts[itemName]--;
+                    updateButtonsState();
+
+                    if (currentText) {
+                        cartInput.value = currentText + `，${actionType}${itemName}，获得${itemPrice}`;
+                    } else {
+                        cartInput.value = `${actionType}${itemName}，获得${itemPrice}`;
+                    }
+                }
+            } else {
+                if (currentText) {
+                    cartInput.value = currentText + `，${actionType}${itemName}，花费${itemPrice}`;
+                } else {
+                    cartInput.value = `${actionType}${itemName}，花费${itemPrice}`;
+                }
+            }
+        }
+
+        function updateButtonsState() {
+            for (const itemName in inventoryCounts) {
+                const qtySpan = document.getElementById(`qty-${itemName}`);
+                const btn = document.getElementById(`btn-${itemName}`);
+                if (qtySpan && btn) {
+                    qtySpan.innerText = inventoryCounts[itemName];
+                    if (inventoryCounts[itemName] <= 0) {
+                        btn.disabled = true;
+                        btn.innerText = "售罄";
+                    } else {
+                        btn.disabled = false;
+                        btn.innerText = "⚙️ 选择";
+                    }
+                }
+            }
+        }
+
+        function clearCart() {
+            document.getElementById('cartInput').value = '';
+            inventoryCounts = {};
+            parseSellData();
+        }
+
+        function confirmTransaction() {
+            const cartText = document.getElementById('cartInput').value.trim();
+            if (!cartText) {
+                alert("交易羊皮卷空白！请添加物品。");
+                return;
+            }
+
+            const command = `/send ${cartText} | /trigger`;
+            if (typeof triggerSlash === 'function') {
+                triggerSlash(command);
+                document.getElementById('cartInput').value = '';
+            } else {
+                console.log("模拟发送交易指令: " + cartText);
+            }
+        }
+    </script>
+</body>
+</html>

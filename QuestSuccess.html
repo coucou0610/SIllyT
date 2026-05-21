@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        @import url("https://fontsapi.zeoseven.com/929/main/result.css");
+    </style>
+</head>
+<body>
+    <style>
+        .success-clear-panel {
+            font-family: "Z Labs RoundPix 16px M CN", monospace;
+            width: 100%;
+            max-width: 500px;
+            margin: 10px auto;
+            padding: 11px 13px;
+            box-sizing: border-box;
+            position: relative;
+            overflow: hidden;
+            color: #3a2a1c;
+
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,240,200,0.35)),
+                repeating-linear-gradient(
+                    135deg,
+                    #fff8e8 0px,
+                    #fff8e8 8px,
+                    #f7edd3 8px,
+                    #f7edd3 16px
+                );
+
+            border: 2px solid #d4af37;
+            border-radius: 12px 4px 12px 4px;
+
+            box-shadow:
+                0 0 14px rgba(212,175,55,0.20),
+                3px 3px 0 rgba(120,90,35,0.18),
+                inset 0 0 0 1px rgba(255,255,255,0.9);
+
+            image-rendering: pixelated;
+            animation: clear-rise 0.45s ease-out;
+        }
+
+        @keyframes clear-rise {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .success-clear-panel::before {
+            content: "";
+            position: absolute;
+            top: 5px;
+            left: 10%;
+            right: 10%;
+            height: 1px;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255,220,120,0.95),
+                transparent
+            );
+        }
+
+        .success-clear-panel::after {
+            content: "✦";
+            position: absolute;
+            right: 10px;
+            bottom: 6px;
+            color: rgba(212,175,55,0.35);
+            font-size: 1rem;
+            animation: sparkle 1.6s ease-in-out infinite;
+        }
+
+        @keyframes sparkle {
+            0%,100% {
+                opacity: 0.3;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.8;
+                transform: scale(1.2);
+            }
+        }
+
+        .clear-badge {
+            text-align: center;
+            margin-bottom: 7px;
+        }
+
+        .clear-kicker {
+            display: inline-block;
+            padding: 3px 10px;
+            font-size: 0.70rem;
+            letter-spacing: 1.5px;
+            color: #ffffff;
+            background: linear-gradient(
+                90deg,
+                #5f8f5f,
+                #7dbb73
+            );
+            border-radius: 20px;
+            box-shadow:
+                inset 0 0 0 1px rgba(255,255,255,0.25),
+                0 2px 5px rgba(0,0,0,0.08);
+        }
+
+        .clear-title {
+            margin-top: 6px;
+            font-size: 0.94rem;
+            line-height: 1.4;
+            text-align: center;
+            color: #7a3b28;
+            font-weight: bold;
+            text-shadow: 1px 1px 0 rgba(255,255,255,0.75);
+            word-break: break-word;
+        }
+
+        .clear-title::before {
+            content: "◇ ";
+            color: #d4af37;
+        }
+
+        .clear-title::after {
+            content: " ◇";
+            color: #d4af37;
+        }
+
+        .clear-main {
+            margin-top: 8px;
+            display: grid;
+            gap: 5px;
+            font-size: 0.80rem;
+        }
+
+        .clear-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 5px;
+            line-height: 1.5;
+        }
+
+        .clear-label {
+            flex-shrink: 0;
+            white-space: nowrap;
+            color: #7b5a2c;
+            font-weight: bold;
+        }
+
+        .clear-value {
+            flex: 1;
+            color: #3a2a1c;
+            word-break: break-word;
+        }
+
+        .scene-value {
+            color: #2f6d72;
+        }
+
+        .unlock-value {
+            color: #7a3b8f;
+        }
+
+        .reward-box {
+            margin-top: 4px;
+            padding: 7px 9px;
+            border: 1px solid rgba(80,150,80,0.25);
+            border-radius: 8px;
+            background:
+                linear-gradient(
+                    180deg,
+                    rgba(140,210,140,0.10),
+                    rgba(255,255,255,0.35)
+                );
+        }
+
+        .reward-value {
+            color: #2f7a45;
+            font-weight: bold;
+        }
+
+        .comment-box {
+            margin-top: 7px;
+            padding-top: 6px;
+            border-top: 1px dashed rgba(180,140,60,0.35);
+            font-size: 0.76rem;
+            line-height: 1.5;
+            color: #7a4d2c;
+            font-style: italic;
+        }
+
+        .comment-label {
+            color: #9b6b2f;
+            font-weight: bold;
+        }
+
+        @media (max-width: 420px) {
+            .success-clear-panel {
+                max-width: calc(100% - 10px);
+                padding: 10px 11px;
+            }
+
+            .clear-title {
+                font-size: 0.86rem;
+            }
+
+            .clear-main {
+                font-size: 0.74rem;
+            }
+
+            .comment-box {
+                font-size: 0.72rem;
+            }
+
+            .clear-kicker {
+                font-size: 0.66rem;
+            }
+        }
+    </style>
+
+    <div class="success-clear-panel">
+
+        <div class="clear-badge">
+            <div class="clear-kicker">SUCCESS CLEAR</div>
+            <div class="clear-title">$1</div>
+        </div>
+
+        <div class="clear-main">
+
+            <div class="clear-row">
+                <span class="clear-label">高光回放：</span>
+                <span class="clear-value scene-value">$2</span>
+            </div>
+
+            <div class="clear-row">
+                <span class="clear-label">成就解锁：</span>
+                <span class="clear-value unlock-value">$3</span>
+            </div>
+
+            <div class="reward-box">
+                <div class="clear-row">
+                    <span class="clear-label">额外奖励：</span>
+                    <span class="clear-value reward-value">$4</span>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="comment-box">
+            <span class="comment-label">系统评价：</span>
+            $5
+        </div>
+
+    </div>
+</body>
+</html>

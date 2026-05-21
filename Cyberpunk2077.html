@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>夜之城导航 · 赛博朋克2077 IF线 | 霓虹重筑 + 永恒爱意</title>
+    <style>
+        /* --- 赛博重工 · 霓虹脉冲全局样式 --- */
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700;900&display=swap');
+        :root {
+            --cp-yellow: #fcee0a;
+            --cp-cyan: #00f0ff;
+            --cp-magenta: #ff0055;
+            --cp-deep: #0a0a1a;
+            --cp-purple: #b000ff;
+            --text-glow: rgba(0, 240, 255, 0.7);
+            --border-cyber: 1px solid rgba(0, 240, 255, 0.5);
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Roboto', 'Segoe UI', system-ui, sans-serif;
+            background-color: #010105;
+            color: #eef2ff;
+            margin: 0;
+            padding: 2rem 1rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ========= 赛博背景层 · 多层动态霓虹 ========= */
+        .cyber-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -5;
+            background: radial-gradient(circle at 30% 10%, #0a0f2a, #020105 80%);
+        }
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(0deg, rgba(0, 240, 255, 0.12) 0px, rgba(0, 240, 255, 0.12) 1px, transparent 1px, transparent 60px),
+                repeating-linear-gradient(90deg, rgba(255, 0, 85, 0.1) 0px, rgba(255, 0, 85, 0.1) 1px, transparent 1px, transparent 60px);
+            transform: skewY(-2deg);
+            pointer-events: none;
+            z-index: -4;
+            animation: gridShift 14s infinite alternate;
+        }
+        @keyframes gridShift {
+            0% { transform: skewY(-2deg) translateX(0px); opacity: 0.5; }
+            100% { transform: skewY(2deg) translateX(15px); opacity: 1; }
+        }
+        .neon-ribbon {
+            position: fixed;
+            top: 20%;
+            left: -20%;
+            width: 150%;
+            height: 280px;
+            background: linear-gradient(90deg, transparent, var(--cp-cyan), var(--cp-magenta), transparent);
+            filter: blur(60px);
+            opacity: 0.25;
+            animation: ribbonSlide 18s infinite alternate;
+            pointer-events: none;
+            z-index: -3;
+        }
+        @keyframes ribbonSlide {
+            0% { transform: translateX(-10%) rotate(-5deg); opacity: 0.2; }
+            100% { transform: translateX(20%) rotate(5deg); opacity: 0.45; }
+        }
+        .digits-rain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -2;
+            font-family: monospace;
+            font-size: 14px;
+            color: rgba(0, 240, 255, 0.2);
+            white-space: pre;
+            overflow: hidden;
+        }
+        .particles {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: floatParticle linear infinite;
+            box-shadow: 0 0 6px currentColor;
+        }
+        @keyframes floatParticle {
+            from { transform: translateY(100vh) scale(0.2); opacity: 0; }
+            to { transform: translateY(-10vh) scale(1.2); opacity: 0.9; }
+        }
+        .scan-line {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.1) 0px, rgba(0,0,0,0.1) 2px, transparent 2px, transparent 8px);
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.4;
+        }
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(8, 8, 18, 0.65);
+            backdrop-filter: blur(14px);
+            border: 1.5px solid rgba(0, 240, 255, 0.5);
+            border-radius: 32px;
+            box-shadow: 0 0 35px rgba(0, 240, 255, 0.3), inset 0 0 20px rgba(255, 0, 85, 0.1);
+            padding: 2rem 2rem;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 2;
+        }
+        .main-container::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(135deg, var(--cp-cyan), var(--cp-magenta), var(--cp-yellow));
+            border-radius: 34px;
+            z-index: -1;
+            opacity: 0.25;
+            filter: blur(18px);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--cp-cyan);
+            padding-bottom: 0.8rem;
+            position: relative;
+        }
+        .header-title {
+            font-size: 3rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #fcee0a, #ff55aa, #00f0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 10px rgba(0,240,255,0.7);
+            animation: glitch-text 2.2s infinite alternate;
+        }
+        @keyframes glitch-text {
+            0% { text-shadow: -2px 0 var(--cp-magenta), 2px 0 var(--cp-cyan); opacity: 1; }
+            20% { text-shadow: 2px 0 var(--cp-magenta), -2px 0 var(--cp-cyan); }
+            40% { text-shadow: -1px 0 var(--cp-yellow), 1px 0 var(--cp-cyan); }
+            70% { text-shadow: 0px 0px 8px var(--cp-cyan); }
+            100% { text-shadow: 3px -1px var(--cp-magenta), -2px 2px var(--cp-cyan); }
+        }
+        /* 固定箴言样式 - 冷峻故障风格，悲剧中带希望 */
+        .eternal-quote {
+            max-width: 90%;
+            margin: 1rem auto 0.5rem auto;
+            padding: 0.8rem 1.5rem;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--cp-cyan);
+            border-radius: 40px;
+            font-size: 0.95rem;
+            font-weight: 400;
+            font-style: normal;
+            color: #ccf4ff;
+            text-shadow: 0 0 3px rgba(0,240,255,0.6), 0 0 6px rgba(0,0,0,0.5);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            font-family: 'Roboto', monospace;
+            position: relative;
+            animation: subtleGlitch 4s infinite;
+        }
+        .eternal-quote::before {
+            content: "✧";
+            font-size: 1.1rem;
+            color: var(--cp-cyan);
+            text-shadow: 0 0 4px cyan;
+            font-style: normal;
+        }
+        .eternal-quote::after {
+            content: "✧";
+            font-size: 1.1rem;
+            color: var(--cp-cyan);
+            text-shadow: 0 0 4px cyan;
+            font-style: normal;
+        }
+        @keyframes subtleGlitch {
+            0%, 100% { transform: translateX(0); opacity: 1; }
+            95% { transform: translateX(0); opacity: 1; }
+            96% { transform: translateX(-1px); opacity: 0.9; }
+            97% { transform: translateX(1px); opacity: 1; }
+            98% { transform: translateX(0); }
+        }
+        .author-info {
+            font-size: 0.85rem;
+            color: #bbccff;
+            background: rgba(0,0,0,0.5);
+            display: inline-block;
+            padding: 0.3rem 1.2rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            letter-spacing: 1px;
+            border: 1px solid rgba(0,240,255,0.3);
+            margin-top: 6px;
+        }
+
+        /* --- 左上角迷你音乐播放器 (镶嵌在页面内，随滚动) --- */
+        .mini-player {
+            position: absolute;
+            top: 1rem;
+            left: 1rem;
+            z-index: 15;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--cp-cyan);
+            border-radius: 40px;
+            padding: 0.3rem 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 0 8px rgba(0,240,255,0.3);
+        }
+        .mini-player:hover {
+            border-color: var(--cp-magenta);
+            box-shadow: 0 0 12px rgba(255,0,85,0.4);
+            transform: scale(1.02);
+        }
+        .mini-player .player-icon {
+            font-size: 1rem;
+            filter: drop-shadow(0 0 2px cyan);
+        }
+        .mini-player .player-control {
+            background: transparent;
+            border: none;
+            color: var(--cp-cyan);
+            font-size: 1.2rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+            padding: 0;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+        }
+        .mini-player .player-control:hover {
+            color: var(--cp-yellow);
+            transform: scale(1.1);
+            text-shadow: 0 0 6px yellow;
+        }
+        .mini-player .player-track {
+            font-size: 0.7rem;
+            color: #ccf;
+            letter-spacing: 0.5px;
+            font-family: monospace;
+            white-space: nowrap;
+        }
+        @media (max-width: 600px) {
+            .mini-player .player-track {
+                display: none;
+            }
+            .mini-player {
+                padding: 0.3rem 0.6rem;
+            }
+        }
+
+        /* 标签页按钮 */
+        .tab-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 1.5rem;
+        }
+        .tab-btn {
+            padding: 0.5rem 1.4rem;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(0, 240, 255, 0.4);
+            border-radius: 60px;
+            color: #ccf4ff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            backdrop-filter: blur(4px);
+            font-size: 0.9rem;
+        }
+        .tab-btn.active, .tab-btn:hover {
+            background: var(--cp-cyan);
+            color: #000;
+            box-shadow: 0 0 18px var(--cp-cyan);
+            border-color: #fff;
+            text-shadow: none;
+        }
+        
+        /* 地区内容布局：统一图片在左，文本在右，保证图片大小一致 */
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            animation: fadeInUp 0.5s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+        }
+        .district-main-row {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 2rem;
+        }
+        @media (max-width: 720px) {
+            .district-main-row {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+        }
+        /* 统一图片容器尺寸，确保所有地区图片大小完全一致 */
+        .district-image-container {
+            width: 100%;
+            background: #000;
+            border-radius: 24px;
+            overflow: hidden;
+            border: 2px solid var(--cp-cyan);
+            box-shadow: 0 0 15px rgba(0,240,255,0.4);
+            aspect-ratio: 4 / 3;
+        }
+        .district-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.4s, filter 0.3s;
+        }
+        .district-image:hover { transform: scale(1.02); filter: brightness(1.1) drop-shadow(0 0 6px cyan); }
+        .district-text {
+            line-height: 1.65;
+            font-size: 0.95rem;
+            color: #eef5ff;
+            text-shadow: 0 0 2px black;
+        }
+        .ncpd-assessment {
+            background: rgba(255, 0, 85, 0.12);
+            border-left: 5px solid var(--cp-yellow);
+            padding: 1rem;
+            border-radius: 16px;
+            margin-top: 1rem;
+            backdrop-filter: blur(4px);
+        }
+
+        /* 景点推荐板块 - 横向滚动一行 */
+        .spot-section {
+            margin-top: 0.5rem;
+            width: 100%;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 0.8rem;
+            scrollbar-width: thin;
+            scrollbar-color: var(--cp-cyan) #1a1a2e;
+        }
+        .spot-section::-webkit-scrollbar {
+            height: 6px;
+        }
+        .spot-section::-webkit-scrollbar-track {
+            background: #1a1a2e;
+            border-radius: 10px;
+        }
+        .spot-section::-webkit-scrollbar-thumb {
+            background: var(--cp-cyan);
+            border-radius: 10px;
+        }
+        .spot-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--cp-yellow);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .spot-title i {
+            font-style: normal;
+            font-size: 1.3rem;
+        }
+        .spot-grid {
+            display: flex;
+            flex-direction: row;
+            gap: 18px;
+            width: max-content;
+            padding: 0 0.2rem;
+        }
+        .spot-card {
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(0, 240, 255, 0.5);
+            border-radius: 20px;
+            padding: 0.7rem 1.2rem;
+            transition: 0.2s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            width: 260px;
+            flex-shrink: 0;
+        }
+        .spot-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--cp-magenta);
+            box-shadow: 0 0 18px rgba(255,0,85,0.3);
+        }
+        .spot-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--cp-cyan);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 0.5rem;
+        }
+        .spot-name::before {
+            content: "📍";
+            font-size: 0.9rem;
+            filter: drop-shadow(0 0 2px cyan);
+        }
+        .spot-desc {
+            font-size: 0.78rem;
+            line-height: 1.4;
+            color: #ccc;
+        }
+
+        /* 角色轮播 */
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00f0ff, #ff55aa);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 2rem 0 1.2rem 0;
+            border-left: 5px solid var(--cp-magenta);
+            padding-left: 1.2rem;
+            letter-spacing: 1px;
+        }
+        .carousel-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 28px;
+            margin: 0.5rem 0 1.5rem 0;
+            cursor: grab;
+        }
+        .character-carousel-track {
+            display: flex;
+            gap: 28px;
+            width: max-content;
+            will-change: transform;
+        }
+        .char-card {
+            flex: 0 0 auto;
+            width: 9cm;
+            text-align: center;
+            transition: filter 0.2s;
+        }
+        .char-image-frame {
+            width: 9cm;
+            height: 16cm;
+            border-radius: 24px;
+            border: 2px solid rgba(0, 240, 255, 0.7);
+            overflow: hidden;
+            background: #0a0a16;
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.5), inset 0 0 4px rgba(255,0,85,0.3);
+            transition: 0.25s ease;
+        }
+        .char-image-frame img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .char-card:hover .char-image-frame {
+            border-color: var(--cp-magenta);
+            box-shadow: 0 0 22px var(--cp-magenta);
+            transform: scale(1.01);
+        }
+        .char-info p {
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            border-radius: 28px;
+            padding: 6px 12px;
+            margin-top: 12px;
+            color: #b8f2ff;
+            border: 1px solid rgba(0,240,255,0.3);
+        }
+
+        /* 开场白列表 */
+        .start-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 2rem;
+        }
+        .start-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.9rem 1.5rem;
+            background: rgba(12, 12, 28, 0.7);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+        .start-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0,240,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+        .start-item:hover::after { left: 100%; }
+        .start-item .index {
+            font-weight: 900;
+            font-size: 1.3rem;
+            color: var(--cp-yellow);
+            text-shadow: 0 0 6px #fcee0a;
+        }
+        .start-item .text { flex: 1; font-weight: 500; }
+        .start-item:hover {
+            background: rgba(0, 240, 255, 0.2);
+            transform: translateX(10px);
+            border-color: var(--cp-cyan);
+            box-shadow: 0 0 12px var(--cp-cyan);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @media (max-width: 800px) {
+            .char-card { width: 7.5cm; }
+            .char-image-frame { width: 7.5cm; height: 13.3cm; }
+            .main-container { padding: 1.5rem; }
+        }
+        @media (max-width: 580px) {
+            .char-card { width: 6cm; }
+            .char-image-frame { width: 6cm; height: 10.6cm; }
+        }
+        .glitch-flash {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,240,255,0.05);
+            pointer-events: none;
+            z-index: 20;
+            animation: randomGlint 8s infinite;
+        }
+        @keyframes randomGlint {
+            0%, 95%, 100% { opacity: 0; }
+            96% { opacity: 0.3; background: rgba(255, 0, 85, 0.2); }
+            97% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="cyber-bg"></div>
+    <div class="grid-overlay"></div>
+    <div class="neon-ribbon"></div>
+    <div class="digits-rain" id="digitRain"></div>
+    <div class="particles" id="particles-container"></div>
+    <div class="scan-line"></div>
+    <div class="glitch-flash"></div>
+
+    <main class="main-container">
+        <header class="header">
+            <!-- 左上角迷你音乐播放器 -->
+            <div class="mini-player" id="miniPlayer">
+                <span class="player-icon">🎧</span>
+                <audio id="bgmAudio" loop autoplay>
+                    <source src="https://files.catbox.moe/3n5vl4.mp3" type="audio/mpeg">
+                    您的浏览器不支持音频播放。
+                </audio>
+                <button id="miniPlayPauseBtn" class="player-control">⏸️</button>
+                <span class="player-track">98.7 Body Heat Radio</span>
+            </div>
+            <h1 class="header-title">夜之城导航</h1>
+            <!-- 固定箴言：冷峻故障风格，悲剧中带希望 -->
+            <div class="eternal-quote">夜之城没有活着的传奇，但有永不消逝的爱</div>
+            <div class="author-info">CTE电竞助理日常 by 陈小耶<br>赛博朋克2077 IF线 by 松茸の土瓶蒸し</div>
+        </header>
+
+        <!-- 区域介绍 (标签页) 含景点推荐，图片统一左侧 -->
+        <section class="district-browser">
+            <div class="tab-buttons" id="tab-buttons"></div>
+            <div id="tab-contents"></div>
+        </section>
+
+        <!-- 角色轮播 -->
+        <section>
+            <h2 class="section-title">== 夜之城传奇 ==</h2>
+            <div class="carousel-wrapper">
+                <div class="character-carousel-track" id="char-track"></div>
+            </div>
+        </section>
+
+        <!-- 开场白列表 -->
+        <section>
+            <h2 class="section-title">== 选择故事线 · 命运分支 ==</h2>
+            <div class="start-list">
+                <div class="start-item" onclick="jumpToSwipe(1)"><span class="index">01</span><span class="text">在前往会议的路上，被太子爷拉着问路，还被塞了一颗糖……</span></div>
+                <div class="start-item" onclick="jumpToSwipe(2)"><span class="index">02</span><span class="text">接了个委托，似乎正好和某个“怪咖”警官的调查撞上了，对方似乎现在因为草草结案很不甘心……要合作吗？警官</span></div>
+                <div class="start-item" onclick="jumpToSwipe(3)"><span class="index">03</span><span class="text">好不容易混出了点头的街头小子第一次进了“来生”，差点中道崩殂，还好有“好心”的中间人出手相救。</span></div>
+                <div class="start-item" onclick="jumpToSwipe(4)"><span class="index">04</span><span class="text">在恶土瞎晃，顺手救下了一只傲娇猫，是宰他一笔还是帮帮他？人，你不会狠心丢下一只猫吧！</span></div>
+                <div class="start-item" onclick="jumpToSwipe(5)"><span class="index">05</span><span class="text">初见新搭档Hades，看上去不是很好相处……这家伙怎么还有洁癖啊？！</span></div>
+                <div class="start-item" onclick="jumpToSwipe(6)"><span class="index">06</span><span class="text">为了出人头地也是豁出去了！接了潜入桑洛凡的豪宅偷取数据的要命委托，结果被当老鼠抓住了……</span></div>
+                <div class="start-item" onclick="jumpToSwipe(7)"><span class="index">07</span><span class="text">作为云顶的顶级性偶，今天被叫去绀碧大厦上门服务大人物。</span></div>
+                <div class="start-item" onclick="jumpToSwipe(8)"><span class="index">08</span><span class="text">荒坂公司外包的雇佣兵，刚帮公司处理了荒坂的叛徒，却不幸偶遇了夜之城最大的boss！但他似乎对你的工作效率还算满意？</span></div>
+                <div class="start-item" onclick="jumpToSwipe(9)"><span class="index">09</span><span class="text">一个下体冒烟，似乎jj快要炸了的路人跟你求救，请求你送到最近的义体医生那里拯救他的“小兄弟”，你想到了亓谢……</span></div>
+                <div class="start-item" 
+onclick="jumpToSwipe(10)"><span class="index">10</span><span class="text">作为荒坂反情报部特工，今天去荒坂精英学院当“特别讲师”，初遇提出刁钻问题的小狐狸。</span></div>
+                <div class="start-item" 
+onclick="jumpToSwipe(11)"><span class="index">11</span><span class="text">好命苦的打工人，996都上得活人微死了，还得自掏腰包去看心理疗愈师T T</span></div>
+                <div class="start-item" onclick="jumpToSwipe(12)"><span class="index">12</span><span class="text" style="color: var(--cp-magenta); text-shadow:0 0 4px magenta;">[自定义开场白] 建立新的连接..</span></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        (function(){
+            // ========= 粒子背景 + 数字雨 =========
+            const particlesContainer = document.getElementById('particles-container');
+            for (let i = 0; i < 55; i++) {
+                let p = document.createElement('div');
+                p.className = 'particle';
+                let size = Math.random() * 4 + 1.5;
+                p.style.width = `${size}px`;
+                p.style.height = `${size}px`;
+                p.style.left = `${Math.random() * 100}vw`;
+                p.style.animationDuration = `${Math.random() * 12 + 5}s`;
+                p.style.animationDelay = `-${Math.random() * 15}s`;
+                let colorChoice = Math.random() > 0.6 ? '#00f0ff' : (Math.random() > 0.5 ? '#ff0055' : '#fcee0a');
+                p.style.background = colorChoice;
+                p.style.boxShadow = `0 0 8px ${colorChoice}`;
+                particlesContainer.appendChild(p);
+            }
+            const rainContainer = document.getElementById('digitRain');
+            const chars = "01アイウエオカキクケコサイバーパンク2077";
+            for (let i=0; i<120; i++) {
+                let span = document.createElement('span');
+                span.style.position = 'absolute';
+                span.style.left = Math.random() * 100 + '%';
+                span.style.top = -20 + Math.random() * 100 + '%';
+                span.style.fontSize = (Math.random() * 12 + 10) + 'px';
+                span.style.opacity = Math.random() * 0.3 + 0.1;
+                span.style.color = `rgba(0, 240, 255, ${Math.random() * 0.5})`;
+                span.style.fontWeight = 'bold';
+                span.style.whiteSpace = 'pre';
+                span.innerText = chars[Math.floor(Math.random() * chars.length)];
+                span.style.animation = `floatParticle ${Math.random() * 15 + 8}s linear infinite`;
+                span.style.textShadow = '0 0 4px cyan';
+                rainContainer.appendChild(span);
+            }
+            const styleRain = document.createElement('style');
+            styleRain.textContent = `@keyframes floatParticle { 0% { transform: translateY(-20vh) rotate(0deg); opacity: 0; } 20% { opacity: 0.7; } 100% { transform: translateY(120vh) rotate(360deg); opacity: 0; } }`;
+            document.head.appendChild(styleRain);
+
+            // ========= 音乐播放器逻辑（迷你版） =========
+            const audio = document.getElementById('bgmAudio');
+            const playPauseBtn = document.getElementById('miniPlayPauseBtn');
+            audio.volume = 0.5;
+            audio.play().catch(e => {
+                console.log("自动播放被阻止，等待用户交互");
+                playPauseBtn.textContent = "▶️";
+            });
+            playPauseBtn.addEventListener('click', () => {
+                if (audio.paused) {
+                    audio.play();
+                    playPauseBtn.textContent = "⏸️";
+                } else {
+                    audio.pause();
+                    playPauseBtn.textContent = "▶️";
+                }
+            });
+
+            // ========= 区域介绍数据 + 景点映射 =========
+            const districts = [
+                { name: "市政中心", img: "https://files.catbox.moe/ehthth.png", text: "硕大无比的摩天大楼遮蔽着无尽蜿蜒的街道。霓虹的光晕为钢筋水泥的芭蕾搭好了舞台。漫布天际的投光灯和巨屏下，笨重的浮空车如游鱼般穿行。这里就是夜之城的心脏，是梦想得以变为现实的地方。而在中心的中心坐落着公司广场。一个特殊的区域，公司各自为政，全然不受外界的干预。<br>同时，这里的市中心也是肆意欢乐的海洋。奢华的酒店、美味的餐厅和专属夜店让你有数不清的理由来乐上一乐。赶快蹬上软鞋、抓起钱包，犒劳一下自己吧。如果你从没来过，那最好先从“七层地狱”酒吧开始体验这里的夜生活。这家酒吧由一位退休的佣兵所创立，是沉浸在这个城市反叛气氛中的最佳去处，再点上一杯他们的定制鸡尾酒，彰显你逍遥法外的一面吧。最后不管怎样，都别忘了去礼品店看看！", ncpd: "<strong>⚡ NCPD 威胁等级评估：</strong>夜之城警察局自豪地将市政中心的当前威胁等级设定为：<strong>“安全”</strong>。至于那些说后街小巷里会发生抢劫和帮派暴力的谣言嘛，要么言过其实，要么早就过时了。",
+                  spots: ["荒坂塔", "军用科技大厦", "荒坂精英学院", "公司广场", "七层地狱酒吧"] },
+                { name: "沃森", img: "https://files.catbox.moe/n78k9q.png", text: "当 2023 年的那场核爆将灾难投向夜之城的中心时，旁边的沃森区变成了诺亚方舟，市民纷纷涌向这里避难。到了21世纪50年代，沃森区开始衰落，而带着事业心的人们从世界各地蜂拥而来，想要凭双手闯出一片天地。诚然，与过去几十年来沃森区创造的股权价值相比，小商小贩的营收不值一提。尽管如此，沃森区的小屋与窄巷却鼓噪着最激动人心的声响。<br>其中最喧闹的集市莫过于“歌舞伎区”——这是一串乱花迷眼的小巷，离老医疗中心不远，而名字说明了它悠久的日本血统。尽管这里出了名的拥挤、脏乱差，骗子横行，但如果你热衷于砍价淘宝，那就非来不可。同时，在城北工业区（NID），那些对工程或物流供应链有诀窍的新住民，纷纷在雇主工厂旁边的公寓里，写下了他们白手起家的第一章。到了晚上，他们会和其他辛勤劳作的夜之城市民们一起，享受小唐人街丰富多彩的文化和美食，林林总总的餐馆满足着他们的味蕾，五色斑斓的霓虹招牌让他们眼花缭乱。", ncpd: "<strong>⚠️ NCPD 威胁等级评估：</strong>夜之城警察局将沃森区的当前威胁等级设定为：<strong>“极度危险”</strong>。帮派犯罪十分猖獗，尤其是歌舞伎区。",
+                  spots: ["来生", "绀碧大厦", "丽姿酒吧", "歌舞伎区露天市场"] },
+                { name: "威斯布鲁克", img: "https://files.catbox.moe/lrrgvw.PNG", text: "威斯布鲁克在第四次公司战争的混乱年代飞速发展，在公司广场重建期间，各大公司在科罗纳多半岛外找到了临时安置总部的场所。创新和生机很快渗入了城市生活的方方面面，从住宅区和胶囊旅馆，再到街头大排档。活在这里，你便与这城市最好的职业前景仅有一步之遥。所以无论是住在宪章山的后起之秀，还是住在北橡区的社会精英，无不把威斯布鲁克当成理想居所。<br>而那些没钱享受威斯布鲁克卧室大床的人，也会把夜晚留给这里，留给日本街——夜之城最顶级的娱乐中心。夜幕降临时，成群的人们会涌进情趣酒店、日式夜总会和风俗店，它们的灯光让整条日本街熠熠生辉。这里我们特别推荐“云顶”，这家夜场的超梦和其他服务绝不会让你失望，它能满足每个寻欢者内心最深处的渴望。", ncpd: "<strong>🔹 NCPD 威胁等级评估：</strong>夜之城警察局将威斯布鲁克的当前威胁等级设定为：<strong>“极低”</strong>。一个名为“虎爪帮”的犯罪团伙经常在日本街出没，但几乎没有理由相信他们会对遵纪守法的居民和游客构成严重威胁。",
+                  spots: ["H8 巨型建筑", "云顶", "扭扭街", "樱花市集", "北橡区牌坊"] },
+                { name: "海伍德", img: "https://files.catbox.moe/mlbe2k.png", text: "尽管和超梦或是全息广告中的绚烂夜之城不大一样，但海伍德仍旧散发着一种微妙且明确的魅力。从沿海的各色精品店和海鲜沙龙，再到五彩缤纷的露天市场和丽景区的玉米卷摊，林林总总的商铺和餐厅足以让海伍德自豪。<br>在海伍德你还可以去市政厅看看，这是一个熙熙攘攘的活动中心，环绕着令人愉悦的开放城市公园。在你赞叹它构筑精美时，请留意那些城市议会成员。他们要么急匆匆前往公司广场开会，要么只是休闲地散着步，跟选民们寒暄二三。海伍德还是协和公园的所在地，它用于纪念企业广场的清理和重建，以及企业协同合作的新时代。尽管总有不满人群在散布谣言，但它的脚下并不是那次清理的放射物填埋场。", ncpd: "<strong>⚠️ NCPD 威胁等级评估：</strong>夜之城警察局将海伍德的当前威胁等级设定为：<strong>“部分危险”</strong>。东部和南部地区有帮派活动，绝大多数属于瓦伦蒂诺帮。这是一个贩卖违禁品、偷窃车辆和从事其他犯罪活动的暴力团伙。",
+                  spots: ["大鸟转转转", "野狼酒吧", "海伍德圣母堂"] },
+                { name: "太平洲", img: "https://files.catbox.moe/s5um24.PNG", text: "在你踏进太平洲之前，请先闭上双眼，想象这样一幅画面：老少咸宜的精品店铺，遍地开花的临时义体诊所。徜徉其中的，是街上一群群快乐的游客，花着辛苦赚来的欧元，享受着一生中最美好的时光。<br>现在睁开眼睛。你看到了什么？极度的贫困？摇摇欲坠的基建？猖獗的帮派暴力？没别的了吗，朋友？那你还真缺乏远见。而那些更有远见的观察家们看到的是太平洲无限的潜力。只要进行适当的投资和有力的拆迁，它就有可能再次一跃成为夜之城最顶级的度假圣地。", ncpd: "<strong>💀 NCPD 威胁等级评估：</strong>夜之城警察局将太平洲的当前威胁等级设定为：<strong>“灾难”</strong>。由于缺乏市政管理，太平洲已经被帮派占据，尤其是巫毒帮。此外，“清道夫”帮派在当地活动的频繁也意味着——走进太平洲的人，出来时很多都会被摘走重要的器官或是昂贵的植入体。",
+                  spots: ["大帝国商场", "超级过山车", "巴蒂酒店"] },
+                { name: "圣多明哥", img: "https://files.catbox.moe/txjhal.PNG", text: "在河谷区，破产工厂的报废厂房点缀着这个圣多明哥的工业心脏地带。不幸的是，荒废带来了蔓草难除般的底层罪犯和堕落。但在科罗纳多农场的睡房社区、白色的尖桩篱笆和洁净的绿色草坪环绕着广阔的房屋，有另一番让人窒息的美。绿树成荫的街道有如草地上的溪流，蜿蜒地穿过其中，把住民从郊野的宁静引向河谷区的工厂和铸造厂。<br>当晚上返家时，无需跋涉到市内便可享受所有城市生活的便利。购物中心、学校和诸如“卡连特船长”、“上好卷™”这样的餐馆比比皆是。而拥有这些不会让你背上房贷的负担；这里的房产仍在开发商的控制之中，他们有条件根据最优需求进行分配。", ncpd: "<strong>⚠️ NCPD 威胁等级评估：</strong>警告：NCPD 已对圣多明哥的安全发出警告，称该地区活跃着一支民间治安力量，名叫六街帮。尽管这些退伍老兵声称会保护邻舍免遭侵害，但 NCPD 已经收到大量关于他们参与帮派行动的报告，包括但不限于收取保护费和持械抢劫。",
+                  spots: ["科罗纳多水坝", "摩天楼 H6"] },
+                { name: "恶土", img: "https://files.catbox.moe/wvours.PNG", text: "市区之外的地带极度危险。如果你选择去探索，还是有几个值得一看的地标。但最好是躲在武装车队的防弹玻璃后面，远远看几眼就行了。<br>值得一看的有生物技术农场。这些巨大的帐篷型建筑就矗立在夜之城的郊外，它们只是生物技术旗下全球农场的一小部分，负责大规模生产合成蛋白质的衍生品。你也可以路过石脊山时瞧瞧，这里正尝试在城东沙漠建立一个自给自足区。街道已然划分、房屋早已建好，等待隔壁企业工人的到来。遗憾的是，这些企业不久就破产了，规划随之烂尾。如今这里变成了一座鬼镇，也是流浪者的聚集地。最后，宏伟的太阳能发电站会让你眼前一亮，它们硕大闪光的太阳能板，从几里地外就能看见。", ncpd: "<strong>⚠️ 流浪者警告：</strong>数量庞大的“流浪者”群体会时常出没，靠偷窃和袭击粗心的旅人过活。如需出行，建议你带好充足的水粮和自卫武器。",
+                  spots: ["流浪者营地", "生物技术农场"] }
+            ];
+
+            const spotDetails = {
+                "来生": "传奇雇佣兵酒吧，由罗格(Rogue)经营，只接待有声望的边缘人。",
+                "绀碧大厦": "位于沃森区海滨的超特级酒店，由荒坂集团经营，专门接待全球政要与公司高管。",
+                "丽姿酒吧": "由“莫克斯”帮经营的超梦主题酒吧，是边缘人群体的避风港，提供全城最高质量的感官体验。",
+                "歌舞伎区露天市场": "充满亚洲风情的垂直贸易区，层层叠叠的霓虹招牌下隐藏着无数违禁插件与黑市情报。",
+                "荒坂塔": "位于市政中心的权力核心，是夜之城最高、最宏伟的建筑。",
+                "军用科技大厦": "位于市政中心，是荒坂塔最强有力的竞争对手，外形如同冰冷的纪念碑。",
+                "荒坂精英学院": "位于市政中心附近的黄金地带，绝大多数学生是权贵阶级的子女，成绩和家族职位直接决定了学生在学校里的“呼吸权”。",
+                "公司广场": "被巨型企业总部包围的圆形绿地，全息巨鱼在空中游弋，是精致优雅与极端压迫感的完美结合。",
+                "七层地狱酒吧": "由前雇佣兵经营的企业级高档酒吧，为公司高层量身定制的“伪街头风”豪华酒吧，将底层苦难转化为昂贵的消费景观。",
+                "H8 巨型建筑": "威斯布鲁克区的垂直生态城市，云顶所在地。赛博朋克“垂直社会”的典型缩影。顶层是奢华的云顶，底层是数万名基层员工挣扎生存的钢铁蜂巢。",
+                "云顶": "位于威斯布鲁克区H8巨型建筑顶层的高端性偶会所，通过算法读取客人内心深处的渴望，提供精准的人格化服务。",
+                "扭扭街": "霓虹闪烁的成人娱乐街区，是全城最臭名昭著也最活色生香的亚文化与欲望集散地。",
+                "樱花市集": "日本街的心脏地带，全息樱花与密集摊位构成了夜之城最唯美也最嘈杂的市井画卷。",
+                "北橡区牌坊": "模仿好莱坞设计的巨大发光地标，其后方是夜之城极少数不受贫困与暴力骚扰的顶级富人庄园。",
+                "大鸟转转转": "海伍德区著名的猛男舞者酒吧，只有最原始的酒精、霓虹灯和廉价的感官刺激，是底层阶级消遣的混乱天堂。",
+                "野狼酒吧": "谷地区最具人情味的社区中心，是杰克·威尔斯的家，也是海伍德人寻找慰藉与尊严的精神支柱。",
+                "海伍德圣母堂": "雄伟的哥特式建筑，在赛博时代的电子荒原中，为流浪者提供最后的信仰与灵魂安宁。",
+                "大帝国商场": "宏伟而荒凉的烂尾商业建筑，如今已成为各路帮派争夺地盘的残酷战场。",
+                "超级过山车": "坐落在破败海岸线旁的钢铁遗骸，修好它后能在这座垂死的城市中感受到片刻纯粹的自由。",
+                "巴蒂酒店": "巫毒帮的神经中枢，充满了浓郁的海地文化符号，是通往黑墙深处数字深渊的秘密门户。",
+                "科罗纳多水坝": "巨大的水利工程景观，站在坝顶可以清晰地看到工业黑烟与城市天际线的强烈对比。",
+                "摩天楼 H6": "圣多明哥居民的密集聚居地，展现了在企业流水线压榨下，普通家庭如何在钢铁森林中维系生活。",
+                "流浪者营地": "由移动拖车与帐篷组成的游牧部落，代表了在城市体制外寻找自由与家族羁绊的另一种活法。",
+                "生物技术农场": "连绵不断的巨大发光温室，在荒原的黑夜中如同外星基地，为全城供应着合成食品的原料。"
+            };
+
+            const tabButtonsContainer = document.getElementById('tab-buttons');
+            const tabContentsContainer = document.getElementById('tab-contents');
+
+            districts.forEach((district, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'tab-btn';
+                btn.textContent = district.name;
+                if (idx === 0) btn.classList.add('active');
+                tabButtonsContainer.appendChild(btn);
+
+                // 景点横向滚动HTML
+                let spotsHtml = '';
+                if (district.spots && district.spots.length > 0) {
+                    const spotCards = district.spots.map(spot => {
+                        const desc = spotDetails[spot] || "夜之城热门地标，等你探索。";
+                        return `<div class="spot-card"><div class="spot-name">${spot}</div><div class="spot-desc">${desc}</div></div>`;
+                    }).join('');
+                    spotsHtml = `<div class="spot-section"><div class="spot-title"><i>📍</i> 热门打卡景点</div><div class="spot-grid">${spotCards}</div></div>`;
+                } else {
+                    spotsHtml = `<div class="spot-section"><div class="spot-title"><i>⚠️</i> 该区域暂无推荐景点</div><div class="spot-desc" style="font-size:0.8rem; opacity:0.7;">或许你该去别的区碰碰运气...</div></div>`;
+                }
+
+                // 统一图片在左，文本在右，保证图片大小一致
+                const mainRowContent = `
+                    <div class="district-image-container">
+                        <img src="${district.img}" alt="${district.name}" class="district-image" onerror="this.src='https://placehold.co/600x400/0a0a2e/cyan?text=Night+City'">
+                    </div>
+                    <div>
+                        <div class="district-text">${district.text}</div>
+                        <div class="ncpd-assessment">${district.ncpd}</div>
+                    </div>
+                `;
+
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'tab-content';
+                contentDiv.innerHTML = `
+                    <div class="district-main-row">
+                        ${mainRowContent}
+                    </div>
+                    ${spotsHtml}
+                `;
+                if (idx === 0) contentDiv.classList.add('active');
+                tabContentsContainer.appendChild(contentDiv);
+
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
+                });
+            });
+
+            // ========= 角色轮播 (20张卡片，无缝无限循环) =========
+            const charactersRaw = [
+                { name: "魏月华", title: "荒坂集团核心门阀<br>——魏氏家族顺位继承人&荒坂集团北美区首席执行官", img: "https://files.catbox.moe/qvv3bq.jpg" },
+                { name: "秦述", title: "NCPD刑事侦查部警探", img: "https://files.catbox.moe/6lv6cq.jpg" },
+                { name: "司洛", title: "摇滚明星 & 头号中间人", img: "https://files.catbox.moe/f24lcq.jpg" },
+                { name: "鹿言", title: "顶级超梦（BD）调校师 & 情绪疗愈专家", img: "https://files.catbox.moe/6v6quk.jpg" },
+                { name: "魏星泽", title: "荒坂集团核心门阀魏氏家族次子", img: "https://files.catbox.moe/1e9vst.jpg" },
+                { name: "周锦宁", title: "军用科技 (Militech) 顶级上游承包商<br>——周氏技术的唯一顺位继承人", img: "https://files.catbox.moe/5wy3b6.jpg" },
+                { name: "谌绪", title: "生物技术 (Biotechnica) 旗下的重要子公司<br>——森云制药的继承人之一<br>荒坂精英学院首席优等生", img: "https://files.catbox.moe/7l4szt.jpg" },
+                { name: "孟明赫", title: "恶土独狼雇佣兵 & 边缘流浪者", img: "https://files.catbox.moe/fqdeoo.jpg" },
+                { name: "亓谢", title: "地下义体黑医 & 网络车手", img: "https://files.catbox.moe/ysop7j.png" },
+                { name: "桑洛凡", title: "桑氏财阀顺位继承人 & 夜之城情报网", img: "https://files.catbox.moe/vscxyx.jpg" }
+            ];
+            const doubledCharacters = [...charactersRaw, ...charactersRaw];
+            const track = document.getElementById('char-track');
+            track.innerHTML = '';
+            doubledCharacters.forEach(char => {
+                const card = document.createElement('div');
+                card.className = 'char-card';
+                card.innerHTML = `
+                    <div class="char-image-frame">
+                        <img src="${char.img}" alt="${char.name}" loading="lazy" onerror="this.src='https://placehold.co/400x600/0a0a2e/cyan?text=Edge+Runner'">
+                    </div>
+                    <div class="char-info"><p>${char.title}</p></div>
+                `;
+                track.appendChild(card);
+            });
+
+            let currentTranslate = 0;
+            let animationId = null;
+            let cardFullWidth = 0;
+            let singleSetWidth = 0;
+            const gap = 28;
+
+            function updateCarouselMetrics() {
+                if (track.children.length === 0) return;
+                const firstCard = track.children[0];
+                cardFullWidth = firstCard.offsetWidth + gap;
+                singleSetWidth = cardFullWidth * charactersRaw.length;
+            }
+
+            function applyTransform(useTransition = true) {
+                if (useTransition) {
+                    track.style.transition = 'transform 0.05s linear';
+                } else {
+                    track.style.transition = 'none';
+                }
+                track.style.transform = `translateX(${currentTranslate}px)`;
+                if (!useTransition) {
+                    track.offsetHeight;
+                    track.style.transition = '';
+                }
+            }
+
+            function resetIfNeeded() {
+                if (currentTranslate <= -singleSetWidth) {
+                    currentTranslate += singleSetWidth;
+                    applyTransform(false);
+                    return true;
+                } else if (currentTranslate >= 0) {
+                    currentTranslate -= singleSetWidth;
+                    applyTransform(false);
+                    return true;
+                }
+                return false;
+            }
+
+            function animateScroll() {
+                if (!animationId) return;
+                currentTranslate -= 1.8;
+                resetIfNeeded();
+                applyTransform(true);
+                animationId = requestAnimationFrame(animateScroll);
+            }
+
+            function initCarousel() {
+                updateCarouselMetrics();
+                currentTranslate = 0;
+                applyTransform(false);
+                if (animationId) cancelAnimationFrame(animationId);
+                animationId = requestAnimationFrame(animateScroll);
+            }
+
+            let resizeTimer;
+            window.addEventListener('resize', () => {
+                if (resizeTimer) clearTimeout(resizeTimer);
+                resizeTimer = setTimeout(() => {
+                    updateCarouselMetrics();
+                    if (currentTranslate < -singleSetWidth) currentTranslate = -singleSetWidth;
+                    if (currentTranslate > 0) currentTranslate = 0;
+                    applyTransform(false);
+                }, 150);
+            });
+            initCarousel();
+
+            // ========= 跳转SillyTavern =========
+            window.jumpToSwipe = async function(swipeIndex) {
+                if (typeof setChatMessages === 'function') {
+                    try {
+                        await setChatMessages([{ message_id: 0, swipe_id: swipeIndex }]);
+                    } catch (error) {
+                        console.error('切换开场白失败:', error);
+                        alert(`SillyTavern连接异常，模拟跳转至开场白 ${swipeIndex}`);
+                    }
+                } else {
+                    alert(`✨ 夜之城 · 命运分支 ✨\n您选择了故事线 #${swipeIndex}\n（演示模式，对接SillyTavern后生效）`);
+                }
+            };
+        })();
+    </script>
+</body>
+</html>

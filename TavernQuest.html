@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>白鸦酒馆委托布告栏</title>
+    <style>
+        @import url("https://fontsapi.zeoseven.com/995/main/result.css");
+    </style>
+</head>
+<body>
+    <style>
+        :root {
+            --wood-dark: #3A261E;
+            --wood-mid: #4A3028;
+            --wood-light: #6A4A38;
+            --wood-border: #2A1810;
+            --brass: #C9A96E;
+            --brass-dark: #8B6914;
+            --parchment: #F3E4BE;
+            --parchment-deep: #E6D1A0;
+            --ink: #3E3128;
+            --ink-soft: #6B5848;
+            --accent: #D89B3C;
+            --shadow: rgba(0, 0, 0, 0.28);
+            --paper-shadow: rgba(80, 50, 20, 0.16);
+            --seal-red: #9B4B4B;
+        }
+
+        .quest-board-container {
+            font-family: "Z Labs RoundPix 12px M CN", sans-serif;
+            font-weight: normal;
+            width: 100%;
+            max-width: 800px;
+            margin: 10px auto;
+            padding: 18px 18px 24px 18px;
+            box-sizing: border-box;
+            color: var(--ink);
+            position: relative;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(0,0,0,0.06) 100%),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.015) 0px, rgba(255,255,255,0.015) 6px, transparent 6px, transparent 12px),
+                linear-gradient(180deg, var(--wood-light) 0%, var(--wood-mid) 22%, var(--wood-dark) 100%);
+            border: 4px solid var(--wood-border);
+            box-shadow: 5px 5px 0px rgba(0,0,0,0.32);
+            clip-path: polygon(12px 0, calc(100% - 12px) 0, 100% 12px, 100% calc(100% - 12px), calc(100% - 12px) 100%, 12px 100%, 0 calc(100% - 12px), 0 12px);
+            overflow: hidden;
+            animation: board-fade-in 0.6s ease-out;
+        }
+
+        .quest-board-container::before {
+            content: "";
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            right: 8px;
+            bottom: 8px;
+            border: 1px solid rgba(201,169,110,0.16);
+            pointer-events: none;
+            clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+        }
+
+        .quest-board-container::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 10%;
+            right: 10%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255,225,160,0.20), transparent);
+            pointer-events: none;
+        }
+
+        @keyframes board-fade-in {
+            from { opacity: 0; transform: translateY(-14px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .board-rivet {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: radial-gradient(circle at 35% 35%, #E0C17F, var(--brass-dark));
+            border: 1px solid #2A1810;
+            z-index: 3;
+        }
+
+        .board-rivet.r1 { top: 8px; left: 8px; }
+        .board-rivet.r2 { top: 8px; right: 8px; }
+        .board-rivet.r3 { bottom: 8px; left: 8px; }
+        .board-rivet.r4 { bottom: 8px; right: 8px; }
+
+        .sparkle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: #FFF2C7;
+            box-shadow: 0 0 6px var(--accent);
+            animation: sparkle-anim 1.8s infinite;
+            z-index: 2;
+        }
+
+        .sparkle:nth-child(6) { top: 11%; left: 14%; animation-delay: 0.5s; }
+        .sparkle:nth-child(7) { top: 76%; right: 18%; animation-delay: 1s; }
+        .sparkle:nth-child(8) { bottom: 16%; left: 26%; animation-delay: 0.2s; }
+        .sparkle:nth-child(9) { top: 26%; right: 38%; animation-delay: 0.8s; }
+
+        @keyframes sparkle-anim {
+            0%, 100% { opacity: 0; transform: scale(0.6); }
+            50% { opacity: 0.9; transform: scale(1.2); }
+        }
+
+        .board-title-wrap {
+            margin-bottom: 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .board-title-sign {
+            padding: 8px 12px 10px 12px;
+            background: repeating-linear-gradient(90deg, #2F1E17 0px, #2F1E17 8px, #3D271D 8px, #3D271D 16px);
+            border: 3px solid #1E120C;
+            box-shadow: inset 0 2px 0 rgba(255,240,200,0.10), inset 0 -2px 0 rgba(0,0,0,0.35), 3px 3px 0 rgba(0,0,0,0.22);
+            clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+            text-align: center;
+        }
+
+        .board-title-en {
+            font-size: 0.72rem;
+            color: rgba(201,169,110,0.72);
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        .board-title-main {
+            font-size: 1.7em;
+            color: var(--brass);
+            text-shadow: 2px 2px 0 #1A120B;
+            line-height: 1.25;
+        }
+
+        .board-title-main::before,
+        .board-title-main::after {
+            content: "◈";
+            color: rgba(201,169,110,0.75);
+            font-size: 0.72em;
+            margin: 0 10px;
+        }
+
+        .quest-layout {
+            display: grid;
+            grid-template-columns: 1.18fr 0.92fr;
+            gap: 16px;
+            align-items: start;
+            position: relative;
+            z-index: 2;
+        }
+
+        .quest-main-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .quest-side-column {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-top: 14px;
+        }
+
+        .quest-card {
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.16) 0%, rgba(0,0,0,0.03) 100%),
+                repeating-linear-gradient(135deg, rgba(255,247,225,0.60) 0px, rgba(255,247,225,0.60) 8px, rgba(240,224,188,0.64) 8px, rgba(240,224,188,0.64) 16px);
+            padding: 14px 16px 12px 16px;
+            border: 3px solid #B8945C;
+            box-shadow: 4px 4px 0px var(--paper-shadow);
+            cursor: pointer;
+            transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+            position: relative;
+            overflow: hidden;
+            color: var(--ink);
+            clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+            animation: card-slide-in 0.5s ease-out backwards;
+        }
+
+        .quest-card::before {
+            content: "";
+            position: absolute;
+            top: 6px;
+            left: 6px;
+            right: 6px;
+            bottom: 6px;
+            border: 1px solid rgba(140,100,50,0.10);
+            pointer-events: none;
+        }
+
+        .quest-card::after {
+            content: "";
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            width: 10px;
+            height: 10px;
+            background: radial-gradient(circle at 35% 35%, #E0C17F, #8B6914);
+            border: 1px solid #6B4A1D;
+            opacity: 0.85;
+        }
+
+        .quest-card-main {
+            min-height: 250px;
+            transform: rotate(-1deg);
+            animation-delay: 0.15s;
+        }
+
+        .quest-card-side-1 {
+            transform: rotate(1deg);
+            animation-delay: 0.30s;
+        }
+
+        .quest-card-side-2 {
+            transform: rotate(-0.6deg);
+            animation-delay: 0.45s;
+        }
+
+        @keyframes card-slide-in {
+            from { opacity: 0; transform: translateX(-24px) rotate(0deg); }
+            to { opacity: 1; }
+        }
+
+        .quest-card:hover {
+            box-shadow: 7px 7px 0px var(--paper-shadow);
+            border-color: var(--accent);
+            z-index: 3;
+        }
+
+        .quest-card-main:hover {
+            transform: translate(-3px, -3px) rotate(-1deg);
+        }
+
+        .quest-card-side-1:hover {
+            transform: translate(-3px, -3px) rotate(1deg);
+        }
+
+        .quest-card-side-2:hover {
+            transform: translate(-3px, -3px) rotate(-0.6deg);
+        }
+
+        .quest-card.clicked {
+            animation: card-click-feedback 0.4s ease;
+        }
+
+        @keyframes card-click-feedback {
+            0% { transform: scale(1); }
+            50% { transform: scale(0.975); }
+            100% { transform: scale(1); }
+        }
+
+        .click-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-size: 3em;
+            color: var(--accent);
+            text-shadow: 2px 2px 0 var(--ink);
+            opacity: 0;
+            animation: click-icon-pop 0.5s ease-out;
+            pointer-events: none;
+            z-index: 4;
+        }
+
+        @keyframes click-icon-pop {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+            80% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+            100% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; }
+        }
+
+        .quest-rank {
+            display: inline-block;
+            background: linear-gradient(180deg, #4A3028 0%, #2E1C14 100%);
+            color: #D4AF37;
+            border: 2px solid #7A551B;
+            padding: 4px 10px;
+            font-size: 0.78rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-shadow: 1px 1px 0 #1A120B;
+            box-shadow: 2px 2px 0 rgba(0,0,0,0.18);
+            margin-bottom: 10px;
+            clip-path: polygon(5px 0, calc(100% - 5px) 0, 100% 5px, 100% calc(100% - 5px), calc(100% - 5px) 100%, 5px 100%, 0 calc(100% - 5px), 0 5px);
+        }
+
+        .quest-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .quest-title {
+            font-size: 1.15em;
+            font-weight: bold;
+            color: var(--ink);
+            line-height: 1.35;
+        }
+
+        .quest-divider {
+            flex-grow: 1;
+            height: 2px;
+            background-image: linear-gradient(to right, #A98452 50%, transparent 50%);
+            background-size: 8px 2px;
+        }
+
+        .quest-details {
+            font-size: 0.98em;
+            line-height: 1.5;
+            margin-bottom: 12px;
+            white-space: pre-wrap;
+            color: var(--ink-soft);
+        }
+
+        .quest-details strong {
+            color: var(--ink);
+        }
+
+        .quest-rewards {
+            border-top: 2px dashed #B8945C;
+            padding-top: 10px;
+            font-size: 0.92em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--ink);
+        }
+
+        .quest-rewards span:first-child {
+            font-size: 1.35em;
+        }
+
+        .accept-btn {
+            background: linear-gradient(180deg, #D8B16B 0%, #C3923E 100%);
+            border: 2px solid #7A551B;
+            color: #2E241F;
+            padding: 7px 14px;
+            text-align: center;
+            display: inline-block;
+            font-size: 0.92rem;
+            margin-top: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-weight: bold;
+            box-shadow: 2px 2px 0px rgba(60,35,10,0.24);
+            transition: transform 0.12s ease, filter 0.12s ease, box-shadow 0.12s ease;
+            clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+            align-self: flex-end;
+        }
+
+        .accept-btn:hover {
+            transform: translate(-1px, -1px);
+            filter: brightness(1.03);
+            box-shadow: 3px 3px 0px rgba(60,35,10,0.28);
+        }
+
+        .accept-btn:active {
+            transform: translate(1px, 1px);
+            box-shadow: 1px 1px 0px rgba(60,35,10,0.24);
+        }
+
+    .luyan-note {
+        width: 88%;
+        max-width: 420px;
+        min-height: 118px;
+        margin: 0 auto;
+
+        padding: 12px 14px;
+        background:
+            linear-gradient(180deg, rgba(255,255,255,0.10) 0%, rgba(0,0,0,0.03) 100%),
+            repeating-linear-gradient(
+                135deg,
+                rgba(235,225,196,0.30) 0px,
+                rgba(235,225,196,0.30) 8px,
+                rgba(215,198,160,0.20) 8px,
+                rgba(215,198,160,0.20) 16px
+            );
+
+        border: 2px dashed rgba(201,169,110,0.48);
+        color: #E8DABB;
+        box-shadow: inset 0 0 0 1px rgba(255,240,200,0.06);
+        position: relative;
+
+        clip-path: polygon(
+            8px 0,
+            calc(100% - 8px) 0,
+            100% 8px,
+            100% calc(100% - 8px),
+            calc(100% - 8px) 100%,
+            8px 100%,
+            0 calc(100% - 8px),
+            0 8px
+        );
+
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .luyan-note::before {
+        content: "◈ WHITE CROW TAVERN ◈";
+        display: block;
+        font-size: 0.68rem;
+        letter-spacing: 1.5px;
+        color: rgba(201,169,110,0.72);
+        margin-bottom: 8px;
+    }
+
+        .luyan-title {
+            font-size: 0.9rem;
+            color: var(--brass);
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 0 #1A120B;
+        }
+
+        .luyan-message {
+            font-size: 0.92rem;
+            line-height: 1.7;
+            color: #F2E7CF;
+            white-space: pre-wrap;
+            margin-bottom: 8px;
+        }
+
+        .luyan-sign {
+            font-size: 0.82rem;
+            color: rgba(232,218,187,0.82);
+            text-align: right;
+        }
+
+        @media (max-width: 700px) {
+            .quest-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .quest-side-column {
+                margin-top: 0;
+            }
+
+            .board-title-main {
+                font-size: 1.35em;
+                line-height: 1.4;
+            }
+
+            .quest-card,
+            .quest-card-main,
+            .quest-card-side-1,
+            .quest-card-side-2 {
+                transform: none;
+            }
+
+            .quest-card:hover,
+            .quest-card-main:hover,
+            .quest-card-side-1:hover,
+            .quest-card-side-2:hover {
+                transform: translate(-2px, -2px);
+            }
+        }
+    </style>
+
+    <div class="quest-board-container">
+        <div class="board-rivet r1"></div>
+        <div class="board-rivet r2"></div>
+        <div class="board-rivet r3"></div>
+        <div class="board-rivet r4"></div>
+
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+        <div class="sparkle"></div>
+
+        <div class="board-title-wrap">
+            <div class="board-title-sign">
+                <div class="board-title-en">WHITE CROW TAVERN</div>
+                <div class="board-title-main">白鸦酒馆 · 委托布告栏</div>
+            </div>
+        </div>
+
+        <div class="quest-layout">
+            <div class="quest-main-column">
+                <div class="quest-card quest-card-main" onclick="playClickAnimation(this)">
+                    <div class="quest-rank">今日委托</div>
+                    <div class="quest-header">
+                        <div class="quest-title">$1</div>
+                        <div class="quest-divider"></div>
+                    </div>
+                    <p class="quest-details"><strong>达成条件：</strong>$2</p>
+                    <div class="quest-rewards">
+                        <span>💎</span>
+                        <span><strong>结算奖励：</strong>$3</span>
+                    </div>
+                    <button class="accept-btn" data-quest-name="$1" data-quest-desc="$2" data-quest-reward="$3">📌 接取委托</button>
+                </div>
+
+                <div class="luyan-note">
+                    <div class="luyan-title">便签</div>
+                    <div class="luyan-message" id="luyan-message"></div>
+                    <div class="luyan-sign">—— 店主 鹿言</div>
+                </div>
+            </div>
+
+            <div class="quest-side-column">
+                <div class="quest-card quest-card-side-1" onclick="playClickAnimation(this)">
+                    <div class="quest-rank">今日委托</div>
+                    <div class="quest-header">
+                        <div class="quest-title">$4</div>
+                        <div class="quest-divider"></div>
+                    </div>
+                    <p class="quest-details"><strong>达成条件：</strong>$5</p>
+                    <div class="quest-rewards">
+                        <span>💎</span>
+                        <span><strong>结算奖励：</strong>$6</span>
+                    </div>
+                    <button class="accept-btn" data-quest-name="$4" data-quest-desc="$5" data-quest-reward="$6">📌 接取委托</button>
+                </div>
+
+                <div class="quest-card quest-card-side-2" onclick="playClickAnimation(this)">
+                    <div class="quest-rank">今日委托</div>
+                    <div class="quest-header">
+                        <div class="quest-title">$7</div>
+                        <div class="quest-divider"></div>
+                    </div>
+                    <p class="quest-details"><strong>达成条件：</strong>$8</p>
+                    <div class="quest-rewards">
+                        <span>💎</span>
+                        <span><strong>结算奖励：</strong>$9</span>
+                    </div>
+                    <button class="accept-btn" data-quest-name="$7" data-quest-desc="$8" data-quest-reward="$9">📌 接取委托</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function playClickAnimation(element) {
+            element.classList.remove('clicked');
+            void element.offsetWidth;
+            element.classList.add('clicked');
+
+            const icon = document.createElement('div');
+            icon.className = 'click-icon';
+            icon.textContent = '◆';
+            element.appendChild(icon);
+
+            setTimeout(() => {
+                if (element.contains(icon)) {
+                    element.removeChild(icon);
+                }
+            }, 500);
+
+            element.addEventListener('animationend', () => {
+                element.classList.remove('clicked');
+            }, { once: true });
+        }
+
+        document.querySelectorAll('.accept-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const questName = btn.getAttribute('data-quest-name');
+                const questDesc = btn.getAttribute('data-quest-desc');
+                const questReward = btn.getAttribute('data-quest-reward');
+
+                const prompt = `[系统] 玩家接取了委托“${questName}”。达成条件：${questDesc}。结算奖励：${questReward}。请根据当前位置与状态，描写接取任务后的即时反应：包括整理装备、确认路线的细节，以及角色踏向目的地那一刻的心理与环境氛围描写。剧情请止步于“正式出发”，重点渲染接下来的挑战预感。注意符合角色设定和游戏风格。`;
+
+                if (typeof triggerSlash === 'function') {
+                    triggerSlash(`/send ${prompt} | /trigger`);
+                } else {
+                    console.log("SillyTavern's triggerSlash function is not available.");
+                }
+            });
+        });
+
+        (function() {
+            const luyanMessages = [
+                "比起完成任务，\n我更希望你平安回来。",
+                "累了的话，\n就先回来坐坐吧。",
+                "白鸦酒馆永远给你留着一盏灯。",
+                "今晚风有点冷，\n别在外面待太久。",
+                "你平安回来，\n这间酒馆才算真正开门。"
+            ];
+
+            const messageEl = document.getElementById('luyan-message');
+            if (messageEl) {
+                const randomMessage = luyanMessages[Math.floor(Math.random() * luyanMessages.length)];
+                messageEl.textContent = `“${randomMessage}”`;
+            }
+        })();
+    </script>
+</body>
+</html>
